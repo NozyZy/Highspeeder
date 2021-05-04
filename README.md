@@ -10,3 +10,6 @@ Petit projet web, un site qui répertorie les meilleurs highscore/speedrun de jo
 ## TODO
 - Menu d'accueil, présentation et liste de jeux
 - Pour chaque jeu, petite navigation high score/speedrun 
+
+[]oui
+[]non
