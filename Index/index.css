@@ -1,44 +1,132 @@
 * {
     font-family: "Gill Sans MT", Verdana, sans-serif;
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-header main {
-    margin: auto;
+body {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+    background-color: #24477b;
 }
 
 header {
-    background-color: greenyellow;
-}
-
-.menu img {
-    height: 60px;
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-.menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
     display: flex;
-    justify-content: flex-start;
-    margin-right: auto;
-    margin-left: auto;
+    justify-content: space-between;
+    background-color: blueviolet;
+    align-items: center;
+    padding: 15px 100px;
+    z-index: 10;
 }
 
-.navigation {
-    padding: 10px;
+header .logo img {
+    height: 50px;
+}
+
+header .menu {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+header .menu .navigation {
+    margin: 0 20px;
+    text-decoration: none;
+    color: white;
+    font-size: 1.5em;
+}
+
+header .menu .navigation:hover {
+    color: wheat;
+}
+
+header .search {
+    position: relative;
+    width: 200px;
+    height: 30px;
+}
+
+header .search input {
+    position: absolute;
+    top: 0;
+    left : 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    outline: none;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 0 30px 0 10px;
+}
+
+header .search input::placeholder {
+    color: lightgrey;
+}
+
+header .search .fa-search {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+    color: white;
 }
 
 footer {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 10px 20px;
+    background-color: mediumpurple;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
-a, a:visited{
-    color: inherit;
+footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+footer .container .menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+footer .container .menu a{
+    position: relative;
+    color: white;
+    font-weight: 500;
+    margin: 10px 30px 20px;
     text-decoration: none;
+    font-size: 1em;
+    border-bottom: 2px solid #24477b;
 }
 
-#clickable:hover {
-    cursor: pointer;
+footer .container a:hover{
+    color: wheat;
 }
 
+footer h6 {
+    color: white;
+}
+
+@media (max-width: 900px) {
+    header {
+        padding: 10px 20px;
+        flex-direction: column;
+    }
+}

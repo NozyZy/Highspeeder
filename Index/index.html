@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
     <title>Highspeeder</title>
     <link href="index.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css">
 </head>
 <body>
-    <header>
+    <header id="top">
+        <a href="index.html" class="logo"><img src="logo.png" alt="logo"></a>
         <nav class="menu">
-            <img src="logo.png" class="navigation" id="clickable" alt="logo" onclick="location.href='index.html'">
-            <a href="index.html"><h4 class="navigation">Accueil</h4></a>
-            <a href="#"><h4 class="navigation">Jeux</h4></a>
-            <a href="#"><h4 class="navigation">A propos</h4></a>
+            <a href="index.html" class="navigation">Accueil</a>
+            <a href="#" class="navigation">Jeux</a>
+            <a href="#" class="navigation">A propos</a>
         </nav>
+        <div class="search">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <label for="searchbar">
+                <input id="searchbar" type="text" placeholder="Rechercher">
+            </label>
+        </div>
     </header>
-
-    <main>
-        <h1>Coucou</h1>
-    </main>
-
     <footer>
-        <h6>© 2021</h6>
+        <div class="container">
+            <nav class="menu">
+                <a href="#">A propos</a>
+                <a href="#top">Haut de page</a>
+            </nav>
+            <h6>Made with &#128153; by Quentin and Maxime</h6>
+        </div>
     </footer>
 </body>
 </html>
