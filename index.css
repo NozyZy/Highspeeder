@@ -1,0 +1,44 @@
+* {
+    font-family: "Gill Sans MT", Verdana, sans-serif;
+    box-sizing: border-box;
+}
+
+header main {
+    margin: auto;
+}
+
+header {
+    background-color: greenyellow;
+}
+
+.menu img {
+    height: 60px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.menu {
+    display: flex;
+    justify-content: flex-start;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.navigation {
+    padding: 10px;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+}
+
+a, a:visited{
+    color: inherit;
+    text-decoration: none;
+}
+
+#clickable:hover {
+    cursor: pointer;
+}
+
