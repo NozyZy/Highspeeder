@@ -1,22 +1,43 @@
-* {
-    font-family: "Gill Sans MT", Verdana, sans-serif;
-    box-sizing: border-box;
-}
-header {
-    background-color: mediumslateblue;
-    margin: auto;
-    color : red;
-}
 
 main {
     display : flex;
     justify-content: center;
     text-align : center;
-    /*width: 500px;*/
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border: 5px solid #A0A0A0;
-    background: #C0C0C0;
+    flex-wrap: wrap;
+    padding: 200px 50px 50px;
+    min-height: 90vh;
+}
+
+main .affichage {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 25px;
+    top: 25px;
+    background-color: steelblue;
+    max-height: 90vh;
+    max-width: 90vw;
+    overflow: auto;
+}
+
+main .affichage .repartition {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    margin: 10px;
+}
+
+main .affichage .repartition .person {
+    display: flex;
+    justify-content: center;
+    flex-flow: column wrap;
+    flex-grow: 1;
+    margin: 5px;
+}
+
+main .affichage .repartition .person li {
+    list-style: none;
+    margin: 0 10px;
 }
 /* Si affichage avec pleins de bordure
 
