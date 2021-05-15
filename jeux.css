@@ -1,0 +1,91 @@
+main {
+    margin-top: 25px;
+    position: relative;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    background-color: white;
+    padding: 5px;
+}
+
+main .menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 100%;
+}
+
+main .menu .navigation {
+    display: flex;
+    height: 30px;
+    width: 150px;
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+main .menu .navigation:hover {
+    cursor: pointer;
+    background-color: var(--color-2);
+}
+
+
+main .container.first {
+    background-color: var(--color-2);
+    height: 100%;
+}
+
+main .box {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+main .box .container {
+    padding: 2px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+main .container .box input, main .container .box select {
+    flex-grow: 1;
+    margin: 5px;
+    border: none;
+    border-bottom: 1px solid lightgrey;
+    padding: 3px 10px;
+    width: 200px;
+    height: 35px;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
+main .container .box input::placeholder, main .container .box select::placeholder {
+    color: black;
+}
+
+main .container .box input:invalid {
+    border: inherit;
+    box-shadow: none;
+    border-bottom: 1px solid indianred;
+    caret-color: indianred;
+}
+
+main .container .box .button {
+    padding: 5px;
+    margin: 5px;
+    background-color: rgba(255,255,255,0.4);
+    outline: none;
+    border: 1px solid lavender;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
+main .container .box .button:hover {
+    background-color: rgba(225,225,225,0.4);
+}
