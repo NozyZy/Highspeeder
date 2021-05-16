@@ -1,13 +1,17 @@
 main {
-    margin-top: 25px;
     position: relative;
     display : flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     flex-wrap: wrap;
-    background-color: white;
-    padding: 5px;
+    margin-bottom: 25px;
+}
+
+main .highscore, .speedrun {
+    display: none;
+    flex-direction: column;
+    align-items: center;
 }
 
 main .menu {
@@ -24,8 +28,9 @@ main .menu .navigation {
     border: 1px solid black;
     justify-content: center;
     align-items: center;
-    margin-bottom: 5px;
     text-transform: uppercase;
+    background-color: white;
+    margin: 20px 5px;
 }
 
 main .menu .navigation:hover {
@@ -43,6 +48,31 @@ main .box {
     padding: 5px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+}
+
+main .box#highscores, .box#speedruns {
+    margin-top: 25px;
+    background-color: white;
+    width: 100%;
+}
+
+main .box .table caption {
+    font-size: 1.5em;
+}
+
+main .box .table th {
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--color-1);
+}
+
+main .box .table {
+    width: 100%;
+}
+
+main .box .table tr, main .box .table th {
+    font-size: 1.3em;
+    padding: 20px;
 }
 
 main .box .container {
