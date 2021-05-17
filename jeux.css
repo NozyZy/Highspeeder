@@ -6,13 +6,67 @@ main {
     flex-direction: column;
     flex-wrap: wrap;
     margin-bottom: 25px;
+    margin-top: 25px;
+    max-width: 90vw;
+    min-width: 20vw;
+    width: 90%;
+
 }
 
-main .highscore, .speedrun {
+main .games {
+    display: grid;
+    max-width: 80vw;
+    width: 100%;
+    height: auto;
+    grid-template-columns: repeat(auto-fit, 320px);
+    justify-content: center;
+    grid-gap: 15px;
+    padding: 10px;
+}
+
+main .games .game {
+    width: 320px;
+    height: 180px;
+    border-radius: 5px;
+}
+
+main .games .game:hover {
+    cursor: pointer;
+}
+
+main .games .game .image-jeu {
+    width: 320px;
+    height: 180px;
+    border-radius: 5px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+main .games .game .text-jeu {
+    display: flex;
+    background-color: var(--color-2);
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+main .games .game .titre-jeu {
+    display: flex;
+}
+
+main .highscore, main .speedrun, main .menu-btns{
     display: none;
     flex-direction: column;
     align-items: center;
 }
+
 
 main .menu {
     display: flex;
@@ -33,9 +87,8 @@ main .menu .navigation {
     margin: 20px 5px;
 }
 
-main .menu .navigation:hover {
+main .menu-btns .menu .navigation:hover {
     cursor: pointer;
-    background-color: var(--color-2);
 }
 
 
@@ -51,7 +104,7 @@ main .box {
     justify-content: center;
 }
 
-main .box#highscores, .box#speedruns {
+main .highscore .box#highscores, main .speedrun .box#speedruns {
     margin-top: 25px;
     background-color: white;
     width: 100%;
