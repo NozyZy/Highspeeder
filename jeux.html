@@ -40,13 +40,13 @@
             <form name="newScore" action="" class="box" id="new-score" onsubmit="return false">
                 <div class="container">
                     <label>
-                        <input type="text" name="pseudo" placeholder="Votre pseudo..." required="">
+                        <input type="text" name="pseudo" id="score-pseudo" placeholder="Votre pseudo..." required="">
                     </label>
                     <label>
-                        <input type="text" name="score" placeholder="Votre score..." required="">
+                        <input type="number" name="score" id="score" placeholder="Votre score..." required="">
                     </label>
                     <label>
-                        <select name="pays">
+                        <select id="score-pays" name="pays">
                             <option value=""    >Votre pays...</option>
                             <option value="AF">Afghanistan</option>
                             <option value="AL">Albania</option>
@@ -299,11 +299,12 @@
                     </label>
                 </div>
                 <div class="container" id="buttons-score">
-                    <button id="submit-score" type="submit" class="button">Ajouter</button>
+                    <button id="submit-score" type="submit" class="button" onclick="addScore()">Ajouter</button>
                 </div>
             </form>
         </div>
         <div class="box" id="highscores">
+            <h3>bite</h3>
             <table class="table" id="scores-table">
                 <caption class="titre">Highscores</caption>
                 <thead>
@@ -313,7 +314,7 @@
                     <th>Pays</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="scores-body">
                 </tbody>
             </table>
         </div>
@@ -618,30 +619,24 @@
 <script type="text/javascript">
 
     class Highscore {
-        constructor() {
-            this.score = [];
-            this.pseudo = [];
-            this.pays = [];
-        }
-
-        addScore(score, pseudo, pays) {
-            this.score.push(score);
-            this.pseudo.push(pseudo);
-            this.pays.push(pays);
+        constructor(score, pseudo, pays) {
+            this.score = score;
+            this.pseudo = pseudo;
+            this.pays = pays;
         }
 
         clear() {
-            this.score = [];
-            this.pseudo = [];
-            this.pays = [];
+            this.score = null;
+            this.pseudo = null;
+            this.pays = null;
         }
     }
 
     class Speedrun {
-        constructor() {
-            this.temps = [];
-            this.pseudo = [];
-            this.pays = [];
+        constructor(temps, pseudo, pays) {
+            this.temps = temps;
+            this.pseudo = pseudo;
+            this.pays = pays;
         }
 
         addTemps(temps, pseudo, pays) {
@@ -651,17 +646,25 @@
         }
 
         clear() {
-            this.temps = [];
-            this.pseudo = [];
-            this.pays = [];
+            this.temps = null;
+            this.pseudo = null;
+            this.pays = null;
         }
     }
 
     class Niveau {
         constructor(name) {
             this.name = name;
-            this.highscore = new Highscore();
-            this.speedrun = new Speedrun();
+            this.highscore = [];
+            this.speedrun = [];
+        }
+
+        static from(json){
+            return Object.assign(new Niveau(), json);
+        }
+
+        addScore(score, pseudo, pays) {
+            this.highscore.push(new Highscore(score,pseudo,pays));
         }
     }
 
@@ -669,7 +672,7 @@
         constructor(name, image) {
             this.name = name;
             this.image = image;
-            this.niveaux = null;
+            this.niveaux = [];
         }
 
         static from(json){
@@ -677,11 +680,7 @@
         }
 
         addNiveau (name) {
-            if (this.niveaux === null || this.niveaux[0] === null) {
-                this.niveaux = new Array(new Niveau(name));
-            } else {
-                this.niveaux.push(new Niveau(name));
-            }
+            this.niveaux.push(new Niveau(name));
         }
     }
 
@@ -694,7 +693,11 @@
 
     localStorage.setItem("games", games_serialized);
      */
-    //window.localStorage.clear();
+
+    function clearAll() {
+        window.localStorage.clear();
+    }
+
     let games_deserialized = JSON.parse(localStorage.getItem("games"));
 
     if (games_deserialized === null) {
@@ -704,6 +707,14 @@
     }
 
     let games = games_deserialized.games;
+    let currentGame
+    let currentLevel = 0
+
+    function updateGames() {
+        let games_serialized = JSON.stringify(games_deserialized);
+        localStorage.setItem("games", games_serialized);
+        console.log(games_serialized);
+    }
 
     function printGames() {
         console.log(games_deserialized);
@@ -718,8 +729,7 @@
                 name = prompt("Le titre doit contenir moins de 32 caractères\nSaisissez le de nouveau : ");
             }
             games.push(new Game(name, image));
-            let games_serialized = JSON.stringify(games_deserialized);
-            localStorage.setItem("games", games_serialized);
+            updateGames();
             createGameGrid();
             isGood = true;
         } else {
@@ -742,18 +752,33 @@
     }
 
     function addGameLevel(gameName, levelName) {
-        let game = Game.from(games.find(game => game.name === gameName));
-        game.addNiveau(levelName);
         let isGood = false;
-        for (let i = 0; i < games.length; i++) {
-            if (games[i].name === gameName) {
-                games[i] = game;
-                isGood = true;
+        let pass = prompt("Mot de passe admin : ");
+        if (sha256(pass) === "f2d33bfa82a3fe93bb356ccef5d71d1a086dd8d081397f9770420ca085e7797b") {
+            alert("Bienvenue admin !");
+            while (name.length > 32) {
+                name = prompt("Le titre doit contenir moins de 32 caractères\nSaisissez le de nouveau : ");
             }
+            let game = Game.from(games.find(game => game.name === gameName));
+            console.log(game);
+            if (game !== undefined) {
+                let level = Niveau.from(games.find(level => level.name === levelName));
+                if (level.name === undefined) {
+                    game.addNiveau(levelName);
+                    for (let i = 0; i < games.length; i++) {
+                        if (games[i].name === gameName) {
+                            games[i] = game;
+                            isGood = true;
+                        }
+                    }
+                    updateGames();
+                }
+                else { alert('Ce niveau existe déjà !'); }
+            } else { alert("Ce jeu n'exite pas !"); }
+
+
         }
-        let games_serialized = JSON.stringify(games_deserialized);
-        localStorage.setItem("games", games_serialized);
-        console.log(games_serialized);
+        else { alert("Tu n'es pas admin !"); }
         return isGood;
     }
 
@@ -796,16 +821,6 @@
         buttons.style.display = "none";
     }
 
-    /*
-    <div class="game" onmouseover="this.style.opacity='0.2'" onmouseout="this.style.opacity='1'">
-            <div class="image-jeu">
-                <div class="text-jeu">
-                    <h3 class="titre-jeu">Gotta Go Fast</h3>
-                </div>
-            </div>
-        </div>
-     */
-
     function createGameGrid() {
         const grid = document.querySelector('#games-grid');
 
@@ -831,7 +846,11 @@
             newGameDiv.className = "game";
             newGameDiv.onmouseover = function() {this.style.opacity='0.8'};
             newGameDiv.onmouseout = function() {this.style.opacity='1'};
-            newGameDiv.onclick = function() {setCaption(g.name); showHighscore();};
+            newGameDiv.onclick = function() {setCaption(g.name);
+                                            currentGame = Game.from(g);
+                                            fillHighscores();
+                                            showHighscore();
+                                            };
 
             grid.appendChild(newGameDiv);
         }
@@ -936,6 +955,93 @@
         }
         return result;
     }
+
+    function checkValidity(block) {
+        for (let i = 0; i < block.length; i++) {
+            if (block[i].value === "") {
+                alert("'" + block[i].id + "' n'est pas bien rempli !")
+                block[i].focus()
+                return false;
+            }
+        }
+
+        return true
+    }
+
+    function addScore() {
+        const score = document.getElementById("score")
+        const pseudo = document.getElementById("score-pseudo")
+        const pays = document.getElementById("score-pays")
+
+        if(!checkValidity([pseudo,score,pays])) {
+            return false
+        }
+        console.log(parseInt(score.value),isNaN(parseInt(score.value)), parseInt(score.value) < 0)
+        if (parseInt(score.value) < 0 || isNaN(parseInt(score.value))) {
+            alert("Le score n'est pas bon !")
+            score.focus()
+            return false
+        }
+
+        currentGame.niveaux[currentLevel].highscore.push(new Highscore(score.value, pseudo.value, pays.value))
+
+        fillHighscores()
+        document.getElementById("score").value = ""
+        document.getElementById("score-pays").value = ""
+        document.getElementById("score-pseudo").value = ""
+
+        return true
+    }
+
+    function removeAllScores () {
+        const tbody = document.querySelector('#scores-body')
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild)
+        }
+    }
+
+    function sortScores() {
+        for(let i = 0; i < games.length; i++) {
+            for(let j = 0; j < games[i].niveaux.length; j++) {
+                games[i].niveaux[j].highscore.sort((a,b) => b.score - a.score);
+            }
+        }
+        updateGames();
+    }
+
+    function fillHighscores() {
+        if (currentGame !== undefined &&
+            currentGame !== null &&
+            currentGame.niveaux !== undefined &&
+            currentGame.niveaux !== null &&
+            currentGame.niveaux[currentLevel] !== undefined &&
+            currentGame.niveaux[currentLevel] !== null &&
+            currentGame.niveaux[currentLevel].highscore !== undefined &&
+            currentGame.niveaux[currentLevel].highscore !== null) {
+
+            removeAllScores()
+            sortScores()
+            let gameScore = currentGame.niveaux[currentLevel].highscore
+            console.log(gameScore)
+            for (let i = 0; i < gameScore.length; i++) {
+                let newItem = document.createElement('tr')
+                let newPseudo = document.createElement('td')
+                let newScore = document.createElement('td')
+                let newCountry = document.createElement('td')
+                newPseudo.textContent = gameScore[i].pseudo
+                newScore.textContent = gameScore[i].score
+                newCountry.textContent = gameScore[i].pays
+
+                newItem.append(newPseudo, newScore, newCountry)
+                const table = document.querySelector("#scores-body")
+                table.appendChild(newItem)
+                updateGames();
+            }
+        } else { console.log("Ce score n'existe pas !") }
+
+
+    }
+
 
 </script>
 

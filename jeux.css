@@ -128,6 +128,11 @@ main .box .table tr, main .box .table th {
     padding: 20px;
 }
 
+main .box .table td {
+    font-size: 1.3em;
+    padding: 5px;
+}
+
 main .box .container {
     padding: 2px;
     display: flex;
