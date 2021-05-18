@@ -327,7 +327,7 @@
                         <input type="text" name="pseudo" placeholder="Votre pseudo..." required="">
                     </label>
                     <label>
-                        <input type="text" name="time" placeholder="Votre temps..." required="">
+                        <input type="time" name="time" step="0.001" placeholder="Votre temps..." required="">
                     </label>
                     <label>
                         <select name="pays">
@@ -1042,6 +1042,18 @@
 
     }
 
+
+    /* Inutile
+        function getTime () {
+            return document.getElementById('tempssec').value;
+        }
+
+        function time () {
+            let date = new Date(null);
+            date.setSeconds(getTime());
+            return date.toISOString().substr(11, 8);  //1970-01-01T02:50:22.000Z ==> Part du caractere 11, et on prends que les 8 suivants.
+        }
+    */
 
 </script>
 

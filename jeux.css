@@ -108,6 +108,8 @@ main .highscore .box#highscores, main .speedrun .box#speedruns {
     margin-top: 25px;
     background-color: white;
     width: 100%;
+    overflow-x: auto;
+    max-width: 80vw;
 }
 
 main .box .table caption {
