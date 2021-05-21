@@ -67,7 +67,6 @@ main .highscore, main .speedrun, main .menu-btns{
     align-items: center;
 }
 
-
 main .menu {
     display: flex;
     flex-direction: row;
@@ -110,8 +109,20 @@ main .highscore .box#highscores, main .speedrun .box#speedruns {
     width: 100%;
 }
 
+main .box .move {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+main .box .move .fas {
+    color: var(--color-3);
+}
+
 main .box .table caption {
     font-size: 1.5em;
+    margin-top: 10px;
 }
 
 main .box .table th {
