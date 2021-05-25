@@ -89,17 +89,26 @@ header .search .fa-search {
 }
 
 /* ------------------MAIN------------------- */
-
+main .ensemble {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 100%;
+}
+main .ensemble .jeu_moment{
+    justify-content: left;
+    text-align: left;
+}
 main .titre1 #grandtitre {
     display: flex;
     background-color: none;
     border-radius: 5px;
     padding: 5px;
     width: 100%;
-    font-size: xxx-large;
+    font-size: 300%;
     align-items: center;
     justify-content: center;
-    margin-top: 5%;
+    margin-top: 2%;
 }
 main .titre1 #petittitre {
     display: flex;
@@ -110,6 +119,7 @@ main .titre1 #petittitre {
     align-items: center;
     justify-content: center;
     margin : 1%;
+    font-size: 150%;
 }
 main .dernier_jeu {
     display: flex;
@@ -118,31 +128,44 @@ main .dernier_jeu {
     padding: 5px;
     width: 100%;
     align-items: center;
-    justify-content: center;
+    justify-content: right;
+    flex-flow: column wrap;
 }
 main .jeu_moment{
+    margin-left: 1%;
     display: flex;
     background-color: ghostwhite;
     border-radius: 5px;
     padding: 5px;
     width: 100%;
     align-items: center;
+    justify-content: left;
+    flex-flow: column wrap;
+}
+main .espacement{
+    display: flex;
+    background-color: none;
+    border-radius: 5px;
+    padding: 100px;
+    width: 100%;
+    align-items: center;
     justify-content: center;
 }
+
 main .games {
     display: grid;
     max-width: 80vw;
     width: 100%;
     height: auto;
-    grid-template-columns: repeat(auto-fit, 320px);
+    grid-template-columns: repeat(auto-fit, 420px);
     justify-content: right;
     grid-gap: 15px;
     padding: 10px;
 }
 
 main .games .game {
-    width: 620px;
-    height: 480px;
+    width: 420px;
+    height: 280px;
     border-radius: 5px;
 }
 
@@ -151,8 +174,8 @@ main .games .game:hover {
 }
 
 main .games .game .image-jeu {
-    width: 620px;
-    height: 480px;
+    width: 420px;
+    height: 280px;
     border-radius: 5px;
     background-position: center;
     background-repeat: no-repeat;
