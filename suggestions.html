@@ -126,17 +126,23 @@
             let newValidity = document.createElement('td')
 
             newName.textContent = games[i].name
+            newImage.style.transition =  "all 0.5s ease-out"
             newImage.style.backgroundImage = "url('" + games[i].image + "')"
             newImage.addEventListener("click", function () {
                 newImage.style.transform = "scale(3)"
             })
             newImage.addEventListener("mouseout", function () {
-                newImage.style.transform = "scale(1)"
+                newImage.style.transform = "initial"
             })
             newValidity.textContent = "Validé ✅"
             newValidity.style.color = "green"
             newValidity.style.textAlign = "center"
-
+            newItem.addEventListener("mouseover", function () {
+                newItem.style.zIndex = "1"
+            })
+            newItem.addEventListener("mouseout", function () {
+                newItem.style.zIndex = "0"
+            })
             newItem.append(newName, newImage, newValidity)
             const table = document.querySelector("#suggestions-body")
             table.appendChild(newItem);
@@ -150,6 +156,7 @@
             let newValidity = document.createElement('td')
 
             newName.textContent = s.name
+            newImage.style.transition =  "all 0.5s ease-out"
             newImage.style.backgroundImage = "url('" + s.image + "')"
             if (s.validate === -1) {
                 newValidity.textContent = "Refusé ❌"

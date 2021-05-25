@@ -762,8 +762,6 @@
             newImageDiv.style.backgroundImage = "url('" + g.image + "')"
             newGameDiv.append(newImageDiv);
             newGameDiv.className = "game";
-            newGameDiv.onmouseover = function() {this.style.opacity='0.8'};
-            newGameDiv.onmouseout = function() {this.style.opacity='1'};
             newGameDiv.onclick = function() {
                                             currentGame = g;
                                             setCaption();
