@@ -88,6 +88,97 @@ header .search .fa-search {
     color: white;
 }
 
+/* ------------------MAIN------------------- */
+
+main .titre1 #grandtitre {
+    display: flex;
+    background-color: none;
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+    font-size: xxx-large;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5%;
+}
+main .titre1 #petittitre {
+    display: flex;
+    background-color: none;
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin : 1%;
+}
+main .dernier_jeu {
+    display: flex;
+    background-color: thistle;
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+main .jeu_moment{
+    display: flex;
+    background-color: ghostwhite;
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+main .games {
+    display: grid;
+    max-width: 80vw;
+    width: 100%;
+    height: auto;
+    grid-template-columns: repeat(auto-fit, 320px);
+    justify-content: right;
+    grid-gap: 15px;
+    padding: 10px;
+}
+
+main .games .game {
+    width: 620px;
+    height: 480px;
+    border-radius: 5px;
+}
+
+main .games .game:hover {
+    cursor: pointer;
+}
+
+main .games .game .image-jeu {
+    width: 620px;
+    height: 480px;
+    border-radius: 5px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+main .games .game .text-jeu {
+    display: flex;
+    background-color: var(--color-2);
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+main .games .game .titre-jeu {
+    display: flex;
+}
+
+
+/* ------------------FOOTER------------------- */
 footer {
     margin-top: auto;
     position: relative;

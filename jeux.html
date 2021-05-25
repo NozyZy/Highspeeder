@@ -8,12 +8,12 @@
   <link href="jeux.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 </head>
-<body onload="showgames(); createGameGrid();">
+<body onload="showgames(); createGameGrid();lastGame();">
 
     <header>
             <a href="index.html" class="logo"><img src="logo.png" alt="logo"></a>
             <nav class="menu">
-                <a href="index.html" class="navigation">Accueil</a>
+                <a href="base.html" class="navigation">Accueil</a>
                 <a href="jeux.html" class="navigation">Jeux</a>
                 <a href="A_propos.html" class="navigation">A propos</a>
             </nav>
@@ -726,6 +726,8 @@
         localStorage.setItem("games", games_serialized);
     }
 
+
+
     function clearAll() {
         window.localStorage.clear();
         createGameGrid();
@@ -751,6 +753,7 @@
     function printGames() {
         console.log(games_deserialized);
     }
+
 
     function addGame(name, image) {
         let isGood = false;
@@ -903,6 +906,8 @@
             grid.appendChild(newGameDiv);
         }
     }
+
+
 
     // source : https://geraintluff.github.io/sha256/
     function sha256(ascii) {
