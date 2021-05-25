@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <title>Highspeeder</title>
     <link href="index.css" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <link href="base.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 </head>
 <body onload="son(); afficherjeu();">
     <header>
@@ -25,20 +25,19 @@
         </div>
     </header>
 
-    <main>
-        <div class="titre1">
-            <h1 id="grandtitre">HighSpeeder</h1>
-            <h2 id="petittitre">Quand passion,vitesse et talent ne font plus qu'un ... </h2>
+    <main id="top">
+        <div class="titres">
+            <div id="grandtitre"><img src="logo.png" alt="logo"></div>
+            <h2 id="petittitre">Quand passion,vitesse et talent ne font plus qu'un ... alors parce que oui en fait et puis aprs tralala la dirladada et parce que ensuite voila</h2>
         </div>
-        <div class="ensemble">
-            <div class="jeu_moment">
+        <div class="games">
+            <div class="box">
                 <h3>Le jeu du moment</h3>
-                <div class="games" id="jeu_du_moment" onclick="locationURL()"></div>
+                <div class="game" id="jeu_du_moment" onclick="locationURL()"></div>
             </div>
-            <div class="espacement"></div>
-            <div class="dernier_jeu">
+            <div class="box">
                 <h3>Le dernier jeu</h3>
-                <div class="games" id="dernier_jeu_add" onclick="locationURL()"></div>
+                <div class="game" id="dernier_jeu_add" onclick="locationURL()"></div>
             </div>
         </div>
     </main>
@@ -54,25 +53,25 @@
         </div>
     </footer>
 </body>
+<script src="Highspeeder.js" charset="utf-8"></script>
 <script type="text/javascript">
 
-    function locationURL() {location.href = 'jeux.html'; }
+    function locationURL() { location.href = 'jeux.html'; }
 
     function son() {
-        var monElementAudio = document.getElementById('musique');
+        let monElementAudio = document.getElementById('musique');
         monElementAudio.volume = 0.01;
         monElementAudio.play();
     }
 
     function lastGame() {
-        var taille = games.length-1
+        const taille = games.length-1
         const grid = document.querySelector('#dernier_jeu_add');
 
         while(grid.firstChild) {
             grid.removeChild(grid.firstChild);
         }
             const g = games[taille];
-            const newGameDiv = document.createElement('div');
             const newImageDiv = document.createElement('div');
             const newTextDiv = document.createElement('div');
             const newTitleDiv = document.createElement('h3');
@@ -84,19 +83,7 @@
             newImageDiv.append(newTextDiv);
             newImageDiv.className = "image-jeu";
             newImageDiv.style.backgroundImage = "url('" + g.image + "')"
-            newGameDiv.append(newImageDiv);
-            newGameDiv.className = "game";
-            newGameDiv.onmouseover = function() {this.style.opacity='0.8'};
-            newGameDiv.onmouseout = function() {this.style.opacity='1'};
-            newGameDiv.onclick = function() {
-                currentGame = g;
-                setCaption();
-                fillHighscores();
-                fillTimes();
-                showAndHideButtons();
-                showHighscore();
-            };
-            grid.appendChild(newGameDiv);
+            grid.appendChild(newImageDiv);
         }
 
     function top_tendeance() {
@@ -133,7 +120,6 @@
             grid.removeChild(grid.firstChild);
         }
         const g = games[taille];
-        const newGameDiv = document.createElement('div');
         const newImageDiv = document.createElement('div');
         const newTextDiv = document.createElement('div');
         const newTitleDiv = document.createElement('h3');
@@ -145,635 +131,13 @@
         newImageDiv.append(newTextDiv);
         newImageDiv.className = "image-jeu";
         newImageDiv.style.backgroundImage = "url('" + g.image + "')"
-        newGameDiv.append(newImageDiv);
-        newGameDiv.className = "game";
-        newGameDiv.onmouseover = function() {this.style.opacity='0.8'};
-        newGameDiv.onmouseout = function() {this.style.opacity='1'};
-        newGameDiv.onclick = function() {
-            currentGame = g;
-            setCaption();
-            fillHighscores();
-            fillTimes();
-            showAndHideButtons();
-            showHighscore();
-        };
-        grid.appendChild(newGameDiv);
+        grid.appendChild(newImageDiv);
     }
-
 
     function afficherjeu() {
         TendeanceGame();
         lastGame();
-
     }
-
-    class Highscore {
-        constructor(score, pseudo, pays) {
-            this.score = score;
-            this.pseudo = pseudo;
-            this.pays = pays;
-        }
-
-        clear() {
-            this.score = null;
-            this.pseudo = null;
-            this.pays = null;
-        }
-    }
-
-    class Speedrun {
-        constructor(temps, pseudo, pays) {
-            this.temps = temps;
-            this.pseudo = pseudo;
-            this.pays = pays;
-        }
-
-        addTemps(temps, pseudo, pays) {
-            this.temps.push(temps);
-            this.pseudo.push(pseudo);
-            this.pays.push(pays);
-        }
-
-        clear() {
-            this.temps = null;
-            this.pseudo = null;
-            this.pays = null;
-        }
-    }
-
-    class Niveau {
-        constructor(name) {
-            this.name = name;
-            this.highscore = [];
-            this.speedrun = [];
-        }
-
-        static from(json){
-            return Object.assign(new Niveau(), json);
-        }
-    }
-
-    class Game {
-        constructor(name, image) {
-            this.name = name;
-            this.image = image;
-            this.niveaux = [];
-        }
-
-        static from(json){
-            return Object.assign(new Game(), json);
-        }
-
-        addNiveau (name) {
-            this.niveaux.push(new Niveau(name));
-        }
-    }
-
-
-
-    function setup() {
-        let games = {
-            games : [
-                new Game("Gotta Go Fast", "https://github.com/BenjaminLesieux/Gotta-Go-Fast/blob/master/images/GGf.jpg?raw=true"),
-                new Game("DOOM Eternal", "https://www.playstationlifestyle.net/assets/uploads/2020/03/Doom-Eternal-Review-2.jpg"),
-                new Game("Mariokart 8", "https://cdn.wccftech.com/wp-content/uploads/2017/04/mario_kart_8_deluxe_art.jpg"),
-            ]
-        }
-
-        games.games[0].addNiveau("Niveau 1")
-        games.games[0].addNiveau("Niveau 2")
-        games.games[0].addNiveau("Niveau 3")
-        games.games[0].addNiveau("Niveau 4")
-        games.games[1].addNiveau("Hell on Earth")
-        games.games[1].addNiveau("Exultia")
-        games.games[1].addNiveau("Cultist Base")
-        games.games[1].addNiveau("Domm Hunter Base")
-        games.games[1].addNiveau("Super Gore Nest")
-        games.games[1].addNiveau("Arc Complex")
-        games.games[1].addNiveau("Mars Core")
-        games.games[1].addNiveau("Sentinel Prime")
-        games.games[1].addNiveau("Taras Nabad")
-        games.games[1].addNiveau("Nekravol 1")
-        games.games[1].addNiveau("Nekravol 2")
-        games.games[1].addNiveau("Urdak")
-        games.games[1].addNiveau("Final Sin")
-        games.games[2].addNiveau("Circuit Arc-en-Ciel")
-        games.games[2].addNiveau("Circuit Mario")
-        games.games[2].addNiveau("Chateau de Bowser")
-
-        let games_serialized = JSON.stringify(games);
-
-        localStorage.setItem("games", games_serialized);
-    }
-
-
-
-    function clearAll() {
-        window.localStorage.clear();
-        createGameGrid();
-    }
-
-    let games_deserialized = JSON.parse(localStorage.getItem("games"));
-
-    if (games_deserialized === null) {
-        setup();
-        games_deserialized = JSON.parse(localStorage.getItem("games"));
-    }
-
-    let games = games_deserialized.games;
-    let currentGame
-    let currentLevel = 0
-
-    function updateGames() {
-        let games_serialized = JSON.stringify(games_deserialized);
-        localStorage.setItem("games", games_serialized);
-        console.log("Games updated : ", games_serialized);
-    }
-
-    function printGames() {
-        console.log(games_deserialized);
-    }
-
-
-    function addGame(name, image) {
-        let isGood = false;
-        let pass = prompt("Mot de passe admin : ");
-        if (sha256(pass) === "f2d33bfa82a3fe93bb356ccef5d71d1a086dd8d081397f9770420ca085e7797b") {
-            alert("Bienvenue admin !");
-            while (name.length > 32) {
-                name = prompt("Le titre doit contenir moins de 32 caractères\nSaisissez le de nouveau : ");
-            }
-            games.push(new Game(name, image));
-            updateGames();
-            createGameGrid();
-            isGood = true;
-        } else {
-            alert("Tu n'es pas admin !");
-        }
-        return isGood;
-    }
-
-    function removeGame(name) {
-        for (let i = 0; i < games.length; i ++) {
-            if (games[i].name === name) {
-                games.splice(i, 1);
-                i--;
-            }
-        }
-        let games_serialized = JSON.stringify(games_deserialized);
-        localStorage.setItem("games", games_serialized);
-        createGameGrid();
-        return true;
-    }
-
-    function addGameLevel(gameName, levelName) {
-        let isGood = false;
-        let pass = prompt("Mot de passe admin : ");
-        if (sha256(pass) === "f2d33bfa82a3fe93bb356ccef5d71d1a086dd8d081397f9770420ca085e7797b") {
-            alert("Bienvenue admin !");
-            while (name.length > 32) {
-                name = prompt("Le titre doit contenir moins de 32 caractères\nSaisissez le de nouveau : ");
-            }
-            let game = Game.from(games.find(game => game.name === gameName));
-            if (game !== undefined) {
-                let level = Niveau.from(games.find(level => level.name === levelName));
-                if (level.name === undefined) {
-                    game.addNiveau(levelName);
-                    for (let i = 0; i < games.length; i++) {
-                        if (games[i].name === gameName) {
-                            games[i] = game;
-                            isGood = true;
-                        }
-                    }
-                    updateGames();
-                }
-                else { alert('Ce niveau existe déjà !'); }
-            } else { alert("Ce jeu n'exite pas !"); }
-
-
-        }
-        else { alert("Tu n'es pas admin !"); }
-        return isGood;
-    }
-
-    const highscore = document.getElementById("highscore");
-    const speedrun = document.getElementById("speedrun");
-    const gamesGrid = document.getElementById("games-grid");
-    const highscoreButton = document.getElementById("highscore-btn");
-    const speedrunButton = document.getElementById("speedrun-btn");
-    const buttons = document.getElementById("menu-btns");
-    const caption = document.getElementsByClassName("titre");
-    const nomNiveau = document.getElementsByClassName("titre-niveau");
-
-    function foo(item) {
-        return item !== undefined && item !== null;
-    }
-
-    function setCaption() {
-        if (foo(currentGame)) {
-            for (let i = 0; i < caption.length; i++) {
-                caption[i].textContent = currentGame.name;
-            }
-            for (let i = 0; i < nomNiveau.length; i++) {
-                if (foo(currentGame.niveaux) && foo(currentGame.niveaux[currentLevel])) {
-                    nomNiveau[i].textContent = currentGame.niveaux[currentLevel].name;
-                } else {
-                    nomNiveau[i].textContent = "Pas de niveaux ! Contectez admin"
-                }
-            }
-        }
-        return false
-    }
-
-    function showHighscore() {
-        highscore.style.display = "flex";
-        speedrun.style.display = "none";
-        gamesGrid.style.display = "none";
-        buttons.style.display = "flex";
-        highscoreButton.style.backgroundColor = "var(--color-2)";
-        speedrunButton.style.backgroundColor = "white";
-    }
-
-    function showSpeedrun() {
-        highscore.style.display = "none";
-        speedrun.style.display = "flex";
-        gamesGrid.style.display = "none";
-        buttons.style.display = "flex";
-        highscoreButton.style.backgroundColor = "white";
-        speedrunButton.style.backgroundColor = "var(--color-2)";
-    }
-
-    function showgames() {
-        highscore.style.display = "none";
-        speedrun.style.display = "none";
-        gamesGrid.style.display = "grid";
-        buttons.style.display = "none";
-    }
-
-    function createGameGrid() {
-        const grid = document.querySelector('#games-grid');
-
-        while(grid.firstChild) {
-            grid.removeChild(grid.firstChild);
-        }
-
-        for (let i = 0; i < games.length; i++) {
-            const g = games[i];
-            const newGameDiv = document.createElement('div');
-            const newImageDiv = document.createElement('div');
-            const newTextDiv = document.createElement('div');
-            const newTitleDiv = document.createElement('h3');
-
-            newTitleDiv.textContent = g.name;
-            newTitleDiv.className = "titre-jeu";
-            newTextDiv.append(newTitleDiv);
-            newTextDiv.className = "text-jeu";
-            newImageDiv.append(newTextDiv);
-            newImageDiv.className = "image-jeu";
-            newImageDiv.style.backgroundImage = "url('" + g.image + "')"
-            newGameDiv.append(newImageDiv);
-            newGameDiv.className = "game";
-            newGameDiv.onmouseover = function() {this.style.opacity='0.8'};
-            newGameDiv.onmouseout = function() {this.style.opacity='1'};
-            newGameDiv.onclick = function() {
-                currentGame = g;
-                setCaption();
-                fillHighscores();
-                fillTimes();
-                showAndHideButtons();
-                showHighscore();
-            };
-            grid.appendChild(newGameDiv);
-        }
-    }
-
-
-
-    // source : https://geraintluff.github.io/sha256/
-    function sha256(ascii) {
-        function rightRotate(value, amount) {
-            return (value>>>amount) | (value<<(32 - amount));
-        }
-
-        let mathPow = Math.pow;
-        let maxWord = mathPow(2, 32);
-        let lengthProperty = 'length'
-        let i, j; // Used as a counter across the whole file
-        let result = ''
-
-        let words = [];
-        let asciiBitLength = ascii[lengthProperty]*8;
-
-        //* caching results is optional - remove/add slash from front of this line to toggle
-        // Initial hash value: first 32 bits of the fractional parts of the square roots of the first 8 primes
-        // (we actually calculate the first 64, but extra values are just ignored)
-        let hash = sha256.h = sha256.h || [];
-        // Round constants: first 32 bits of the fractional parts of the cube roots of the first 64 primes
-        let k = sha256.k = sha256.k || [];
-        let primeCounter = k[lengthProperty];
-        /*/
-        let hash = [], k = [];
-        let primeCounter = 0;
-        //*/
-
-        let isComposite = {};
-        for (let candidate = 2; primeCounter < 64; candidate++) {
-            if (!isComposite[candidate]) {
-                for (i = 0; i < 313; i += candidate) {
-                    isComposite[i] = candidate;
-                }
-                hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
-                k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
-            }
-        }
-
-        ascii += '\x80' // Append Ƈ' bit (plus zero padding)
-        while (ascii[lengthProperty]%64 - 56) ascii += '\x00' // More zero padding
-        for (i = 0; i < ascii[lengthProperty]; i++) {
-            j = ascii.charCodeAt(i);
-            if (j>>8) return; // ASCII check: only accept characters in range 0-255
-            words[i>>2] |= j << ((3 - i)%4)*8;
-        }
-        words[words[lengthProperty]] = ((asciiBitLength/maxWord)|0);
-        words[words[lengthProperty]] = (asciiBitLength)
-
-        // process each chunk
-        for (j = 0; j < words[lengthProperty];) {
-            let w = words.slice(j, j += 16); // The message is expanded into 64 words as part of the iteration
-            let oldHash = hash;
-            // This is now the undefinedworking hash", often labelled as letiables a...g
-            // (we have to truncate as well, otherwise extra entries at the end accumulate
-            hash = hash.slice(0, 8);
-
-            for (i = 0; i < 64; i++) {
-                let i2 = i + j;
-                // Expand the message into 64 words
-                // Used below if
-                let w15 = w[i - 15], w2 = w[i - 2];
-
-                // Iterate
-                let a = hash[0], e = hash[4];
-                let temp1 = hash[7]
-                    + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) // S1
-                    + ((e&hash[5])^((~e)&hash[6])) // ch
-                    + k[i]
-                    // Expand the message schedule if needed
-                    + (w[i] = (i < 16) ? w[i] : (
-                            w[i - 16]
-                            + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3)) // s0
-                            + w[i - 7]
-                            + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10)) // s1
-                        )|0
-                    );
-                // This is only used once, so *could* be moved below, but it only saves 4 bytes and makes things unreadble
-                let temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) // S0
-                    + ((a&hash[1])^(a&hash[2])^(hash[1]&hash[2])); // maj
-
-                hash = [(temp1 + temp2)|0].concat(hash); // We don't bother trimming off the extra ones, they're harmless as long as we're truncating when we do the slice()
-                hash[4] = (hash[4] + temp1)|0;
-            }
-
-            for (i = 0; i < 8; i++) {
-                hash[i] = (hash[i] + oldHash[i])|0;
-            }
-        }
-
-        for (i = 0; i < 8; i++) {
-            for (j = 3; j + 1; j--) {
-                let b = (hash[i]>>(j*8))&255;
-                result += ((b < 16) ? 0 : '') + b.toString(16);
-            }
-        }
-        return result;
-    }
-
-    function checkValidity(block) {
-        for (let i = 0; i < block.length; i++) {
-            if (block[i].value === "") {
-                alert("'" + block[i].id + "' n'est pas bien rempli !")
-                block[i].focus()
-                return false;
-            }
-        }
-
-        return true
-    }
-
-    function addScore() {
-        const score = document.getElementById("score")
-        const pseudo = document.getElementById("score-pseudo")
-        const pays = document.getElementById("score-pays")
-
-        if(!checkValidity([pseudo,score,pays])) {
-            return false
-        }
-
-        if (parseInt(score.value) < 0 || isNaN(parseInt(score.value))) {
-            alert("Le score n'est pas bon !")
-            score.focus()
-            return false
-        }
-
-        currentGame.niveaux[currentLevel].highscore.push(new Highscore(score.value, pseudo.value, pays.value))
-
-        fillHighscores()
-        document.getElementById("score").value = ""
-        document.getElementById("score-pays").value = ""
-        document.getElementById("score-pseudo").value = ""
-
-        return true
-    }
-
-    function removeAllScores () {
-        const tbody = document.querySelector('#scores-body')
-        while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild)
-        }
-    }
-
-    function sortScores() {
-        for(let i = 0; i < games.length; i++) {
-            for(let j = 0; j < games[i].niveaux.length; j++) {
-                games[i].niveaux[j].highscore.sort((a,b) => b.score - a.score);
-            }
-        }
-        updateGames();
-    }
-
-    function fillHighscores() {
-        if (foo(currentGame) &&
-            foo(currentGame.niveaux) &&
-            foo(currentGame.niveaux[currentLevel]) &&
-            foo(currentGame.niveaux[currentLevel].highscore)) {
-
-            removeAllScores()
-            sortScores()
-            setCaption()
-            let gameScore = currentGame.niveaux[currentLevel].highscore
-            for (let i = 0; i < gameScore.length; i++) {
-                let newItem = document.createElement('tr')
-                let newPseudo = document.createElement('td')
-                let newScore = document.createElement('td')
-                let newCountry = document.createElement('td')
-                newPseudo.textContent = gameScore[i].pseudo
-                newScore.textContent = gameScore[i].score
-                newCountry.textContent = gameScore[i].pays
-
-                newItem.append(newPseudo, newScore, newCountry)
-                const table = document.querySelector("#scores-body")
-                table.appendChild(newItem)
-                updateGames();
-            }
-        } else { console.log("Ce score n'existe pas !") }
-
-
-    }
-
-    function addTime() {
-        const time = document.getElementById("time")
-        const pseudo = document.getElementById("time-pseudo")
-        const pays = document.getElementById("time-pays")
-
-        if(!checkValidity([pseudo,time,pays])) {
-            return false
-        }
-
-        if (parseInt(time.value) < 0 || isNaN(parseInt(time.value))) {
-            alert("Le temps n'est pas bon !")
-            time.focus()
-            return false
-        }
-
-        currentGame.niveaux[currentLevel].speedrun.push(new Speedrun(time.value, pseudo.value, pays.value))
-
-        fillTimes()
-        document.getElementById("time").value = ""
-        document.getElementById("time-pays").value = ""
-        document.getElementById("time-pseudo").value = ""
-
-        return true
-    }
-
-    function removeAllTimes () {
-        const tbody = document.querySelector('#times-body')
-        while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild)
-        }
-    }
-
-    function sortTimes() {
-        for(let i = 0; i < games.length; i++) {
-            for(let j = 0; j < games[i].niveaux.length; j++) {
-                games[i].niveaux[j].speedrun.sort((a,b) =>
-                    (a.temps < b.temps) ? -1 : ((a.temps > b.temps) ? 1 : 0));
-            }
-        }
-        updateGames();
-    }
-
-    function fillTimes() {
-        if (foo(currentGame) &&
-            foo(currentGame.niveaux) &&
-            foo(currentGame.niveaux[currentLevel]) &&
-            foo(currentGame.niveaux[currentLevel].speedrun)) {
-
-            removeAllTimes()
-            sortTimes()
-            setCaption()
-            let gameTime = currentGame.niveaux[currentLevel].speedrun
-            for (let i = 0; i < gameTime.length; i++) {
-                let newItem = document.createElement('tr')
-                let newPseudo = document.createElement('td')
-                let newTime = document.createElement('td')
-                let newCountry = document.createElement('td')
-                newPseudo.textContent = gameTime[i].pseudo
-                newTime.textContent = gameTime[i].temps
-                newCountry.textContent = gameTime[i].pays
-
-                newItem.append(newPseudo, newTime, newCountry)
-                const table = document.querySelector("#times-body")
-                table.appendChild(newItem)
-                updateGames();
-            }
-        } else { console.log("Ce temps n'existe pas !") }
-
-
-    }
-
-    const leftButtons = document.getElementsByClassName("fa-arrow-alt-circle-left")
-    const rightButtons = document.getElementsByClassName("fa-arrow-alt-circle-right")
-
-    function leftBut() {
-        --currentLevel; showAndHideButtons();  fillHighscores(); fillTimes();
-    }
-
-    function rightBut() {
-        ++currentLevel; showAndHideButtons();  fillHighscores(); fillTimes();
-    }
-
-    function showAndHideButtons() {
-        if (currentGame.niveaux === undefined || currentGame.niveaux === null) {
-            for (let i = 0; i < leftButtons.length; i++) {
-                leftButtons[i].style.color = "white"
-                leftButtons[i].onclick = function () {}
-                leftButtons[i].addEventListener("mouseover", function () {
-                    leftButtons[i].style.cursor = "default"
-                })
-                rightButtons[i].style.color = "white"
-                rightButtons[i].onclick = function () {}
-                rightButtons[i].addEventListener("mouseover", function () {
-                    rightButtons[i].style.cursor = "default"
-                })
-            }
-        }
-        else {
-            if (currentLevel === 0) {
-                for (let i = 0; i < leftButtons.length; i++) {
-                    leftButtons[i].style.color = "white"
-                    leftButtons[i].onclick = function () {}
-                    leftButtons[i].addEventListener("mouseover", function () {
-                        leftButtons[i].style.cursor = "default"
-                    })
-                }
-            }
-            else {
-                for (let i = 0; i < leftButtons.length; i++) {
-                    leftButtons[i].style.color = "var(--color-3)"
-                    leftButtons[i].onclick = function () { leftBut() }
-                    leftButtons[i].addEventListener("mouseover", function () {
-                        leftButtons[i].style.cursor = "pointer"
-                    })
-                    leftButtons[i].addEventListener("mouseout", function () {
-                        leftButtons[i].style.cursor = "default"
-                    })
-                }
-            }
-
-            if (currentLevel === currentGame.niveaux.length - 1) {
-                for (let i = 0; i < rightButtons.length; i++) {
-                    rightButtons[i].style.color = "white"
-                    rightButtons[i].onclick = function () {}
-                    rightButtons[i].addEventListener("mouseover", function () {
-                        rightButtons[i].style.cursor = "default"
-                    })
-                }
-            }
-            else {
-                for (let i = 0; i < rightButtons.length; i++) {
-                    rightButtons[i].style.color = "var(--color-3)"
-                    rightButtons[i].onclick = function () { rightBut() }
-                    rightButtons[i].addEventListener("mouseover", function () {
-                        rightButtons[i].style.cursor = "pointer"
-                    })
-                    rightButtons[i].addEventListener("mouseout", function () {
-                        rightButtons[i].style.cursor = "default"
-                    })
-                }
-            }
-        }
-
-    }
-
 
 </script>
 

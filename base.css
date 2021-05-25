@@ -1,0 +1,122 @@
+
+/* ------------------MAIN------------------- */
+
+main {
+    position: relative;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    margin-top: 25px;
+    max-width: 80vw;
+    min-width: 20vw;
+    width: 80%;
+}
+
+main .games {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+main .titres {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+main .titres #grandtitre {
+    display: flex;
+    padding: 5px;
+    font-size: 3em;
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+main .titres #petittitre {
+    display: flex;
+    padding: 5px;
+    margin : 5px;
+    font-size: 1.5em;
+    width: 80%;
+}
+
+main .games .box {
+    display: flex;
+    background-color: thistle;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: right;
+    flex-flow: column wrap;
+    margin: 5px;
+    padding: 5px;
+    transition: all 0.5s ease-out;
+}
+
+main .games .box:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+main .games .box .game{
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+main .games .box .game .image-jeu {
+    width: 320px;
+    height: 180px;
+    border-radius: 5px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+main .games .box .game .text-jeu {
+    display: flex;
+    background-color: var(--color-2);
+    border-radius: 5px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+main .games .box .game .titre-jeu {
+    display: flex;
+}
+
+
+@media (max-width: 915px) {
+    main .games {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 820px) {
+    main .titres {
+        width: 100%;
+    }
+
+    main .titres #grandtitre img {
+        width: 100%;
+    }
+}
+
+@media (max-width: 450px) {
+    main .titres #petittitre , main .games .box, main .games .box .game, main .games .box .game .image-jeu {
+        width: 100%;
+    }
+}

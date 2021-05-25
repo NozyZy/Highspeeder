@@ -69,48 +69,32 @@
         </div>
     </footer>
 </body>
-
+<script src="Highspeeder.js" charset="utf-8"></script>
 <script type="text/javascript">
-    class Suggestion {
-        constructor(name, image) {
-            this.name = name;
-            this.image = image;
-            this.validate = 0;
+
+    function refuseSuggestion(name) {
+        for (let i = 0; i < suggestions.length; i++) {
+            if (suggestions[i].name === name) {
+                suggestions[i].validate = -1
+            }
         }
-
-        setSalidate(validation) {
-            this.validate = validation;
-        }
-
-        static from(json){
-            return Object.assign(new Suggestion(), json);
-        }
-    }
-
-    let games_deserialized = JSON.parse(localStorage.getItem("games"));
-    let suggestions_deserialized = JSON.parse(localStorage.getItem("suggestions"));
-
-    let games = games_deserialized.games
-    let suggestions = suggestions_deserialized.suggestions
-
-    function print() {
-        console.log(games_deserialized)
-        console.log(suggestions_deserialized)
-    }
-
-    function updateSuggestions() {
-        const suggestions_serialized = JSON.stringify(suggestions_deserialized)
-        localStorage.setItem("suggestions", suggestions_serialized);
-        console.log("suggestions updated : ", suggestions_serialized);
+        updateSuggestions()
+        fillSuggestions()
     }
 
     function addSuggestion() {
         const name = document.getElementById("name-suggestion")
         const image = document.getElementById("image-suggestion")
 
-        /*if(!checkValidity([name,image])) {
+        if(!checkValidity([name,image])) {
             return false
-        }*/
+        }
+
+        if (name.value.length > 32) {
+            alert("Le nom du jeu est trop long !")
+            name.focus()
+            return false
+        }
 
         suggestions.push(new Suggestion(name.value, image.value))
 
@@ -143,6 +127,12 @@
 
             newName.textContent = games[i].name
             newImage.style.backgroundImage = "url('" + games[i].image + "')"
+            newImage.addEventListener("click", function () {
+                newImage.style.transform = "scale(3)"
+            })
+            newImage.addEventListener("mouseout", function () {
+                newImage.style.transform = "scale(1)"
+            })
             newValidity.textContent = "Validé ✅"
             newValidity.style.color = "green"
             newValidity.style.textAlign = "center"
