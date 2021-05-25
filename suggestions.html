@@ -96,6 +96,10 @@
             return false
         }
 
+        if (!foo(suggestions)) {
+
+        }
+
         suggestions.push(new Suggestion(name.value, image.value))
 
         fillSuggestions()
@@ -157,7 +161,7 @@
 
             newName.textContent = s.name
             newImage.style.transition =  "all 0.5s ease-out"
-            newImage.style.backgroundImage = "url('" + s.image + "')"
+            newImage.style.backgroundImage = "url('" + s.image + "'), url('https://ih0.redbubble.net/image.481333419.2068/ap,550x550,16x12,1,transparent,t.u1.png')"
             if (s.validate === -1) {
                 newValidity.textContent = "Refusé ❌"
                 newValidity.style.color = "red"
