@@ -1234,6 +1234,32 @@
 
     }
 
+
+    function top_tendeance() {
+        let bestscore = 0;
+        let index = 0;
+        let score = 0;
+
+        for(let i = 0 ; i < games.length; i++) {
+            score = 0;
+            for(let o=0; o < games[i].niveaux.length;o++) {
+                for(let j=0; j < games[i].niveaux[o].highscore.length; j++) {
+                    score = score + 1;
+                }
+            }
+            for(let o=0; o < games[i].niveaux.length;o++){
+                for (let y=0; y < games[i].niveaux[o].speedrun.length; y++) {
+                    score = score + 1;
+                }
+            }
+
+            if (score > bestscore) {
+                bestscore = score;
+                index = i;
+            }
+        }
+        return index;
+    }
 </script>
 
 </html>

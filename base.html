@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" type="text/css" href="//use.fontawesome.com/releases/v5.7.2/css/all.css">
 </head>
-<body onload="son(); lastGame();">
+<body onload="son(); afficherjeu();">
     <header>
         <a href="index.html" class="logo"><img src="logo.png" alt="logo"></a>
         <nav class="menu">
@@ -32,12 +32,12 @@
         <div class="ensemble">
             <div class="jeu_moment">
                 <h3>Le jeu du moment</h3>
-                <div class="testat"><img src="logo.png" alt="logo"></div>
+                <div class="games" id="jeu_du_moment" onclick="locationURL()"></div>
             </div>
             <div class="espacement"></div>
             <div class="dernier_jeu">
                 <h3>Le dernier jeu</h3>
-                <div class="games" id="games-grid" onclick="locationURL()"></div>
+                <div class="games" id="dernier_jeu_ajouter" onclick="locationURL()"></div>
             </div>
         </div>
     </main>
@@ -65,7 +65,7 @@
 
     function lastGame() {
         var taille = games.length-1
-        const grid = document.querySelector('#games-grid');
+        const grid = document.querySelector('#dernier_jeu_ajouter');
 
         while(grid.firstChild) {
             grid.removeChild(grid.firstChild);
@@ -98,6 +98,73 @@
             grid.appendChild(newGameDiv);
         }
 
+
+    function top_tendeance() {
+        let bestscore = 0;
+        let index = 0;
+        let score = 0;
+
+        for(let i = 0 ; i < games.length; i++) {
+            score = 0;
+            for(let o=0; o < games[i].niveaux.length;o++) {
+                for(let j=0; j < games[i].niveaux[o].highscore.length; j++) {
+                    score = score + 1;
+                }
+            }
+            for(let o=0; o < games[i].niveaux.length;o++){
+                for (let y=0; y < games[i].niveaux[o].speedrun.length; y++) {
+                    score = score + 1;
+                }
+            }
+
+            if (score > bestscore) {
+                bestscore = score;
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    function TendeanceGame() {
+        let jeu_en_question = top_tendeance();
+
+        const grid = document.querySelector('#jeu_du_moment');
+
+        while(grid.firstChild) {
+            grid.removeChild(grid.firstChild);
+        }
+        const g = games[jeu_en_question];
+        const newGameDiv = document.createElement('div');
+        const newImageDiv = document.createElement('div');
+        const newTextDiv = document.createElement('div');
+        const newTitleDiv = document.createElement('h3');
+
+        newTitleDiv.textContent = g.name;
+        newTitleDiv.className = "titre-jeu";
+        newTextDiv.append(newTitleDiv);
+        newTextDiv.className = "text-jeu";
+        newImageDiv.append(newTextDiv);
+        newImageDiv.className = "image-jeu";
+        newImageDiv.style.backgroundImage = "url('" + g.image + "')"
+        newGameDiv.append(newImageDiv);
+        newGameDiv.className = "game";
+        newGameDiv.onmouseover = function() {this.style.opacity='0.8'};
+        newGameDiv.onmouseout = function() {this.style.opacity='1'};
+        newGameDiv.onclick = function() {
+            currentGame = g;
+            setCaption();
+            fillHighscores();
+            fillTimes();
+            showAndHideButtons();
+            showHighscore();
+        };
+        grid.appendChild(newGameDiv);
+    }
+
+    function afficherjeu() {
+        TendeanceGame();
+        lastGame();
+    }
 
     class Highscore {
         constructor(score, pseudo, pays) {
