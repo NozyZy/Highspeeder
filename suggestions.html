@@ -5,9 +5,10 @@
     <meta charset="utf-8">
     <title>Highspeeder</title>
     <link href="index.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https//use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <link href="suggestions.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 </head>
-<body>
+<body onload="fillSuggestions();">
     <header>
         <a href="index.html" class="logo"><img src="logo.png" alt="logo"></a>
         <nav class="menu">
@@ -25,7 +26,37 @@
     </header>
 
     <main id="top">
-
+        <div class="suggestions">
+            <div class="container first">
+                <form name="newSuggestion" action="" class="box" id="new-suggestion" onsubmit="return false">
+                    <div class="container">
+                        <label>
+                            <input type="text" name="name" id="name-suggestion" placeholder="Le nom du jeu..." required="">
+                        </label>
+                        <label>
+                            <input type="url" name="image" id="image-suggestion" placeholder="Lien de l'image..." required="">
+                        </label>
+                    </div>
+                    <div class="container" id="buttons-score">
+                        <button id="submit-score" type="submit" class="button" onclick="addScore();">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+            <div class="box" id="suggestions">
+                <table class="table" id="suggestions-table">
+                    <caption class="titre">Suggestions</caption>
+                    <thead>
+                    <tr>
+                        <th>Nom du jeu</th>
+                        <th class="image">Image</th>
+                        <th>Statut</th>
+                    </tr>
+                    </thead>
+                    <tbody id="suggestions-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </main>
 
     <footer>
@@ -38,4 +69,62 @@
         </div>
     </footer>
 </body>
+
+<script type="text/javascript">
+    class Suggestion {
+        constructor(name, image) {
+            this.name = name;
+            this.image = image;
+            this.validate = false;
+        }
+
+        setSalidate(validation) {
+            this.validate = validation;
+        }
+
+        static from(json){
+            return Object.assign(new Suggestion(), json);
+        }
+    }
+
+    let games_deserialized = JSON.parse(localStorage.getItem("games"));
+    let suggestions_deserialized = JSON.parse(localStorage.getItem("suggestions"));
+
+    let games = games_deserialized.games
+    let suggestions = suggestions_deserialized.suggestions
+
+    function print() {
+        console.log(games_deserialized)
+        console.log(suggestions_deserialized)
+    }
+
+    function removeAllSuggestions() {
+        const tbody = document.querySelector('#suggestions-body')
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild)
+        }
+    }
+
+    function fillSuggestions() {
+        removeAllSuggestions()
+        for (let i = 0; i < games.length; i++) {
+            let newItem = document.createElement('tr')
+            let newName = document.createElement('td')
+            let newImage = document.createElement('td')
+            let newValidity = document.createElement('td')
+
+            newName.textContent = games[i].name
+            newImage.style.backgroundImage = "url('" + games[i].image + "')"
+            newValidity.textContent = "Validé ✅"
+            newValidity.style.color = "green"
+            newValidity.style.textAlign = "center"
+
+            newItem.append(newName, newImage, newValidity)
+            const table = document.querySelector("#suggestions-body")
+            table.appendChild(newItem);
+        }
+    }
+
+</script>
+
 </html>

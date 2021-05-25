@@ -12,83 +12,10 @@ main {
     width: 90%;
 }
 
-main .games {
-    display: grid;
-    max-width: 80vw;
-    width: 100%;
-    height: auto;
-    grid-template-columns: repeat(auto-fit, 320px);
-    justify-content: center;
-    grid-gap: 15px;
-    padding: 10px;
-}
-
-main .games .game {
-    width: 320px;
-    height: 180px;
-    border-radius: 5px;
-}
-
-main .games .game:hover {
-    cursor: pointer;
-}
-
-main .games .game .image-jeu {
-    width: 320px;
-    height: 180px;
-    border-radius: 5px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-main .games .game .text-jeu {
-    display: flex;
-    background-color: var(--color-2);
-    border-radius: 5px;
-    padding: 5px;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-}
-
-main .games .game .titre-jeu {
-    display: flex;
-}
-
-main .highscore, main .speedrun, main .menu-btns{
-    display: none;
+main .suggestions {
     flex-direction: column;
     align-items: center;
 }
-
-main .menu {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    height: 100%;
-}
-
-main .menu .navigation {
-    display: flex;
-    height: 30px;
-    width: 150px;
-    border: 1px solid black;
-    justify-content: center;
-    align-items: center;
-    text-transform: uppercase;
-    background-color: white;
-    margin: 20px 5px;
-}
-
-main .menu-btns .menu .navigation:hover {
-    cursor: pointer;
-}
-
 
 main .container.first {
     background-color: var(--color-2);
@@ -102,7 +29,7 @@ main .box {
     justify-content: center;
 }
 
-main .highscore .box#highscores, main .speedrun .box#speedruns {
+main .suggestions .box#suggestions {
     margin-top: 25px;
     background-color: white;
     width: 100%;
@@ -110,16 +37,6 @@ main .highscore .box#highscores, main .speedrun .box#speedruns {
     max-width: 80vw;
 }
 
-main .box .move {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-}
-
-main .box .move .fas {
-    color: var(--color-3);
-}
 
 main .box .table caption {
     font-size: 1.5em;
@@ -137,12 +54,15 @@ main .box .table {
 
 main .box .table tr, main .box .table th {
     font-size: 1.3em;
-    padding: 20px;
+    padding: 20px 40px;
 }
 
 main .box .table td {
     font-size: 1.3em;
-    padding: 5px;
+    padding: 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 main .box .container {
@@ -152,7 +72,7 @@ main .box .container {
     flex-wrap: wrap;
 }
 
-main .container .box input, main .container .box select {
+main .container .box input {
     flex-grow: 1;
     margin: 5px;
     border: none;

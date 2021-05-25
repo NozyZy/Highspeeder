@@ -700,6 +700,9 @@
                 new Game("Mariokart 8", "https://cdn.wccftech.com/wp-content/uploads/2017/04/mario_kart_8_deluxe_art.jpg"),
             ]
         }
+        let suggestions = {
+            suggestions : []
+        }
 
         games.games[0].addNiveau("Niveau 1")
         games.games[0].addNiveau("Niveau 2")
@@ -723,8 +726,10 @@
         games.games[2].addNiveau("Chateau de Bowser")
 
         let games_serialized = JSON.stringify(games);
+        let suggestions_serialized = JSON.stringify(suggestions)
 
         localStorage.setItem("games", games_serialized);
+        localStorage.setItem("suggestions", suggestions_serialized);
     }
 
 
