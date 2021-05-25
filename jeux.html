@@ -740,20 +740,29 @@
     }
 
     let games_deserialized = JSON.parse(localStorage.getItem("games"));
+    let suggestions_deserialized = JSON.parse(localStorage.getItem("suggestions"));
 
     if (games_deserialized === null) {
         setup();
         games_deserialized = JSON.parse(localStorage.getItem("games"));
     }
 
+
     let games = games_deserialized.games;
+    let suggestions = suggestions_deserialized.suggestions;
     let currentGame
     let currentLevel = 0
 
     function updateGames() {
-        let games_serialized = JSON.stringify(games_deserialized);
+        const games_serialized = JSON.stringify(games_deserialized);
         localStorage.setItem("games", games_serialized);
         console.log("Games updated : ", games_serialized);
+    }
+
+    function updateSuggestions() {
+        const suggestions_serialized = JSON.stringify(suggestions_deserialized)
+        localStorage.setItem("suggestions", suggestions_serialized);
+        console.log("suggestions updated : ", suggestions_serialized);
     }
 
     function printGames() {
@@ -770,6 +779,12 @@
                 name = prompt("Le titre doit contenir moins de 32 caractères\nSaisissez le de nouveau : ");
             }
             games.push(new Game(name, image));
+            for (let i = 0; i < suggestions.length; i++) {
+                if (suggestions[i].name === name) {
+                    suggestions.splice(i, 1)
+                    updateSuggestions()
+                }
+            }
             updateGames();
             createGameGrid();
             isGood = true;

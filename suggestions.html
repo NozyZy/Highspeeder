@@ -38,7 +38,7 @@
                         </label>
                     </div>
                     <div class="container" id="buttons-score">
-                        <button id="submit-score" type="submit" class="button" onclick="addScore();">Ajouter</button>
+                        <button id="submit-score" type="submit" class="button" onclick="addSuggestion();">Ajouter</button>
                     </div>
                 </form>
             </div>
@@ -75,7 +75,7 @@
         constructor(name, image) {
             this.name = name;
             this.image = image;
-            this.validate = false;
+            this.validate = 0;
         }
 
         setSalidate(validation) {
@@ -96,6 +96,34 @@
     function print() {
         console.log(games_deserialized)
         console.log(suggestions_deserialized)
+    }
+
+    function updateSuggestions() {
+        const suggestions_serialized = JSON.stringify(suggestions_deserialized)
+        localStorage.setItem("suggestions", suggestions_serialized);
+        console.log("suggestions updated : ", suggestions_serialized);
+    }
+
+    function addSuggestion() {
+        const name = document.getElementById("name-suggestion")
+        const image = document.getElementById("image-suggestion")
+
+        /*if(!checkValidity([name,image])) {
+            return false
+        }*/
+
+        suggestions.push(new Suggestion(name.value, image.value))
+
+        fillSuggestions()
+
+        document.getElementById("name-suggestion").value = ""
+        document.getElementById("image-suggestion").value = ""
+
+        console.log(suggestions)
+
+        updateSuggestions()
+
+        return true
     }
 
     function removeAllSuggestions() {
@@ -119,6 +147,33 @@
             newValidity.style.color = "green"
             newValidity.style.textAlign = "center"
 
+            newItem.append(newName, newImage, newValidity)
+            const table = document.querySelector("#suggestions-body")
+            table.appendChild(newItem);
+        }
+
+        for (let i = 0; i < suggestions.length; i++) {
+            let s = suggestions[i]
+            let newItem = document.createElement('tr')
+            let newName = document.createElement('td')
+            let newImage = document.createElement('td')
+            let newValidity = document.createElement('td')
+
+            newName.textContent = s.name
+            newImage.style.backgroundImage = "url('" + s.image + "')"
+            if (s.validate === -1) {
+                newValidity.textContent = "Refusé ❌"
+                newValidity.style.color = "red"
+            }
+            else if (s.validate === 0) {
+                newValidity.textContent = "En attente ⏳"
+                newValidity.style.color = "orange"
+            }
+            else {
+                newValidity.textContent = "Validé ✅"
+                newValidity.style.color = "green"
+            }
+            newValidity.style.textAlign = "center"
             newItem.append(newName, newImage, newValidity)
             const table = document.querySelector("#suggestions-body")
             table.appendChild(newItem);
