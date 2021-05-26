@@ -17,12 +17,15 @@ main .affichage {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    padding: 25px;
+    padding: 40px;
     top: 25px;
     background-color: steelblue;
     max-height: 90vh;
     max-width: 90vw;
     overflow: auto;
+    border-radius: 40% / 40%;
+    opacity: 80%;
+    filter : blur(0);
 }
 
 main .affichage .repartition {
@@ -31,6 +34,7 @@ main .affichage .repartition {
     justify-content: center;
     margin: 10px;
 }
+
 
 main .affichage .repartition .person {
     display: flex;
