@@ -304,6 +304,13 @@
                     </div>
                 </form>
             </div>
+            <label class="right-label">
+                <select id="score-sort" name="sort" onchange="fillHighscores()">
+                    <option value="Rank">Trier par rang</option>
+                    <option value="Name">Trier par pseudo</option>
+                    <option value="Country">Trier par pays</option>
+                </select>
+            </label>
             <div class="box" id="highscores">
                 <div class="move">
                     <i class="fas fa-arrow-alt-circle-left fa-2x" onclick="leftBut()"></i>
@@ -314,10 +321,10 @@
                     <caption class="titre">Highscores</caption>
                     <thead>
                     <tr>
+                        <th>Rang</th>
                         <th>Pseudo</th>
                         <th>Highscore</th>
                         <th>Pays</th>
-                        <th>Position</th>
                     </tr>
                     </thead>
                     <tbody id="scores-body">
@@ -333,7 +340,7 @@
                             <input type="text" name="pseudo" id="time-pseudo" placeholder="Votre pseudo..." required="">
                         </label>
                         <label>
-                            <input type="time" name="time" id="time" step="1" placeholder="Votre temps(En seconde)..." required="">
+                            <input type="time" name="time" id="time" step="1" value="00:00:00" placeholder="Votre temps(En seconde)..." required="">
                         </label>
                         <label>
                             <select id="time-pays" name="pays">
@@ -593,6 +600,13 @@
                     </div>
                 </form>
             </div>
+            <label class="right-label">
+                <select id="time-sort" name="sort" onchange="fillTimes()">
+                    <option value="Rank">Trier par rang</option>
+                    <option value="Name">Trier par pseudo</option>
+                    <option value="Country">Trier par pays</option>
+                </select>
+            </label>
             <div class="box" id="speedruns">
                 <div class="move">
                     <i class="fas fa-arrow-alt-circle-left fa-2x" onclick="leftBut()"></i>
@@ -603,6 +617,7 @@
                     <caption class="titre">Speedruns</caption>
                     <thead>
                     <tr>
+                        <th>Rang</th>
                         <th>Pseudo</th>
                         <th>Temps</th>
                         <th>Pays</th>
@@ -708,9 +723,11 @@
                 if (foo(currentGame.niveaux) && foo(currentGame.niveaux[currentLevel])) {
                     nomNiveau[i].textContent = currentGame.niveaux[currentLevel].name;
                 } else {
-                    nomNiveau[i].textContent = "Pas de niveaux ! Contectez admin"
+                    nomNiveau[i].textContent = "Pas de niveaux ! Contactez admin"
                 }
             }
+            document.body.style.backgroundColor = "rgba(36,71,123,0.5)"
+            document.body.style.backgroundImage = "url('" + currentGame.image + "')"
         }
         return false
     }
@@ -807,13 +824,47 @@
         }
     }
 
-    function sortScores() {
-        for(let i = 0; i < games.length; i++) {
-            for(let j = 0; j < games[i].niveaux.length; j++) {
-                games[i].niveaux[j].highscore.sort((a,b) => b.score - a.score);
-            }
+    function sortScoresRank() {
+        currentGame.niveaux[currentLevel].highscore.sort((a,b) => b.score - a.score);
+        for (let k = 0; k < currentGame.niveaux[currentLevel].highscore.length; k++) {
+            currentGame.niveaux[currentLevel].highscore[k].rank = k+1;
         }
         updateGames();
+    }
+
+    function sortScoresName() {
+        currentGame.niveaux[currentLevel].highscore.sort(function (a, b) {
+            a = a.pseudo.toLowerCase()
+            b = b.pseudo.toLowerCase()
+            if (a > b) {
+                return 1;
+            }
+            if (b > a) {
+                return -1;
+            }
+            return 0;
+        });
+        updateGames();
+    }
+
+    function sortScoresCountry() {
+        currentGame.niveaux[currentLevel].highscore.sort(function (a, b) {
+            if (a.pays > b.pays) {
+                return 1;
+            }
+            if (b.pays > a.pays) {
+                return -1;
+            }
+            return 0;
+        });
+        updateGames();
+    }
+    
+    function sortScores() {
+        const selectSort = document.getElementById("score-sort").value
+        if (selectSort === "Rank") sortScoresRank()
+        else if (selectSort === "Name") sortScoresName()
+        else if (selectSort === "Country") sortScoresCountry()
     }
 
     function fillHighscores() {
@@ -823,19 +874,30 @@
             foo(currentGame.niveaux[currentLevel].highscore)) {
 
             removeAllScores()
+            sortScoresRank()
             sortScores()
             setCaption()
             let gameScore = currentGame.niveaux[currentLevel].highscore
             for (let i = 0; i < gameScore.length; i++) {
                 let newItem = document.createElement('tr')
+                let newRank = document.createElement('td')
                 let newPseudo = document.createElement('td')
                 let newScore = document.createElement('td')
                 let newCountry = document.createElement('td')
+                newRank.textContent = "#" + gameScore[i].rank
+                newRank.style.textAlign = "center"
+                if (gameScore[i].rank === 1) {
+                    newRank.style.color = "goldenrod"
+                } else if (gameScore[i].rank === 2){
+                    newRank.style.color = "silver"
+                } else if (gameScore[i].rank === 3){
+                    newRank.style.color = "saddlebrown"
+                }
                 newPseudo.textContent = gameScore[i].pseudo
                 newScore.textContent = gameScore[i].score
                 newCountry.textContent = gameScore[i].pays
 
-                newItem.append(newPseudo, newScore, newCountry)
+                newItem.append(newRank, newPseudo, newScore, newCountry)
                 const table = document.querySelector("#scores-body")
                 table.appendChild(newItem)
                 updateGames();
@@ -849,21 +911,18 @@
         const time = document.getElementById("time")
         const pseudo = document.getElementById("time-pseudo")
         const pays = document.getElementById("time-pays")
-
         if(!checkValidity([pseudo,time,pays])) {
             return false
         }
 
-        if (parseInt(time.value) < 0 || isNaN(parseInt(time.value))) {
-            alert("Le temps n'est pas bon !")
-            time.focus()
-            return false
+        if (time.value.toString().length <= 5) {
+            time.value += ":00"
         }
-
         currentGame.niveaux[currentLevel].speedrun.push(new Speedrun(time.value, pseudo.value, pays.value))
 
         fillTimes()
-        document.getElementById("time").value = ""
+
+        document.getElementById("time").value = "00:00:00"
         document.getElementById("time-pays").value = ""
         document.getElementById("time-pseudo").value = ""
 
@@ -877,14 +936,48 @@
         }
     }
 
-    function sortTimes() {
-        for(let i = 0; i < games.length; i++) {
-            for(let j = 0; j < games[i].niveaux.length; j++) {
-                games[i].niveaux[j].speedrun.sort((a,b) =>
-                    (a.temps < b.temps) ? -1 : ((a.temps > b.temps) ? 1 : 0));
-            }
+    function sortTimesRank() {
+        currentGame.niveaux[currentLevel].speedrun.sort((a,b) =>
+            (a.temps < b.temps) ? -1 : ((a.temps > b.temps) ? 1 : 0));
+        for (let k = 0; k < currentGame.niveaux[currentLevel].speedrun.length; k++) {
+            currentGame.niveaux[currentLevel].speedrun[k].rank = k+1;
         }
         updateGames();
+    }
+
+    function sortTimesName() {
+        currentGame.niveaux[currentLevel].speedrun.sort(function (a, b) {
+            a = a.pseudo.toLowerCase()
+            b = b.pseudo.toLowerCase()
+            if (a > b) {
+                return 1;
+            }
+            if (b > a) {
+                return -1;
+            }
+            return 0;
+        });
+        updateGames();
+    }
+
+    function sortTimesCountry() {
+        currentGame.niveaux[currentLevel].speedrun.sort(function (a, b) {
+            if (a.pays > b.pays) {
+                return 1;
+            }
+            if (b.pays > a.pays) {
+                return -1;
+            }
+            return 0;
+        });
+        updateGames();
+    }
+
+    function sortTimes() {
+        const selectSort = document.getElementById("time-sort").value
+        if (selectSort === "Rank") sortTimesRank()
+        else if (selectSort === "Name") sortTimesName()
+        else if (selectSort === "Country") sortTimesCountry()
     }
 
     function fillTimes() {
@@ -894,19 +987,30 @@
             foo(currentGame.niveaux[currentLevel].speedrun)) {
 
             removeAllTimes()
+            sortTimesRank()
             sortTimes()
             setCaption()
             let gameTime = currentGame.niveaux[currentLevel].speedrun
             for (let i = 0; i < gameTime.length; i++) {
                 let newItem = document.createElement('tr')
+                let newRank = document.createElement('td')
                 let newPseudo = document.createElement('td')
                 let newTime = document.createElement('td')
                 let newCountry = document.createElement('td')
+                newRank.textContent = "#" + gameTime[i].rank
+                newRank.style.textAlign = "center"
+                if (gameTime[i].rank === 1) {
+                    newRank.style.color = "goldenrod"
+                } else if (gameTime[i].rank === 2){
+                    newRank.style.color = "silver"
+                } else if (gameTime[i].rank === 3){
+                    newRank.style.color = "saddlebrown"
+                }
                 newPseudo.textContent = gameTime[i].pseudo
                 newTime.textContent = gameTime[i].temps
                 newCountry.textContent = gameTime[i].pays
 
-                newItem.append(newPseudo, newTime, newCountry)
+                newItem.append(newRank, newPseudo, newTime, newCountry)
                 const table = document.querySelector("#times-body")
                 table.appendChild(newItem)
                 updateGames();
@@ -928,7 +1032,7 @@
     }
 
     function showAndHideButtons() {
-        if (currentGame.niveaux === undefined || currentGame.niveaux === null) {
+        if (currentGame.niveaux === undefined || currentGame.niveaux === null || currentGame.niveaux.length === 0) {
             for (let i = 0; i < leftButtons.length; i++) {
                 leftButtons[i].style.color = "white"
                 leftButtons[i].onclick = function () {}
@@ -988,32 +1092,6 @@
             }
         }
 
-    }
-
-    function top_tendeance() {
-        let bestscore = 0;
-        let index = 0;
-        let score = 0;
-
-        for(let i = 0 ; i < games.length; i++) {
-            score = 0;
-            for(let o=0; o < games[i].niveaux.length;o++) {
-                for(let j=0; j < games[i].niveaux[o].highscore.length; j++) {
-                    score = score + 1;
-                }
-            }
-            for(let o=0; o < games[i].niveaux.length;o++){
-                for (let y=0; y < games[i].niveaux[o].speedrun.length; y++) {
-                    score = score + 1;
-                }
-            }
-
-            if (score > bestscore) {
-                bestscore = score;
-                index = i;
-            }
-        }
-        return index;
     }
 </script>
 

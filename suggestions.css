@@ -37,7 +37,6 @@ main .suggestions .box#suggestions {
     max-width: 80vw;
 }
 
-
 main .box .table caption {
     font-size: 1.5em;
     margin-top: 10px;
@@ -45,11 +44,12 @@ main .box .table caption {
 
 main .box .table th {
     text-transform: uppercase;
-    border-bottom: 1px solid var(--color-1);
+    border-bottom: 2px solid var(--color-1);
 }
 
 main .box .table {
     width: 100%;
+    padding-bottom: 25px;
 }
 
 main .box .table tr, main .box .table th {
@@ -63,6 +63,7 @@ main .box .table td {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    border-bottom: 1px solid var(--color-2);
 }
 
 main .box .container {

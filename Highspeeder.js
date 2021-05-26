@@ -4,6 +4,7 @@ class Highscore {
         this.score = score;
         this.pseudo = pseudo;
         this.pays = pays;
+        this.rank = 0;
     }
 
     clear() {
@@ -18,12 +19,7 @@ class Speedrun {
         this.temps = temps;
         this.pseudo = pseudo;
         this.pays = pays;
-    }
-
-    addTemps(temps, pseudo, pays) {
-        this.temps.push(temps);
-        this.pseudo.push(pseudo);
-        this.pays.push(pays);
+        this.rank = 0
     }
 
     clear() {
@@ -140,7 +136,6 @@ let games = games_deserialized.games;
 function updateGames() {
     const games_serialized = JSON.stringify(games_deserialized);
     localStorage.setItem("games", games_serialized);
-    console.log("Games updated : ", games_serialized);
 }
 
 function updateSuggestions() {
