@@ -10,11 +10,13 @@ main {
     justify-content: center;
     text-align : center;
     flex-wrap: wrap;
-    padding: 200px 50px 50px;
+    margin-top: auto;
 }
 
 main .affichage {
     display: flex;
+    margin-top: 15px;
+    margin-bottom: 15px;
     justify-content: center;
     flex-direction: column;
     padding: 40px;

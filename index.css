@@ -142,3 +142,20 @@ footer h6 {
         flex-direction: column;
     }
 }
+
+@media (max-width: 310px) {
+    footer {
+        flex-direction: column;
+    }
+
+    footer .container .menu {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+    }
+}
+
+@media (max-width: 210px) {
+
+}

@@ -13,6 +13,7 @@ main {
 }
 
 main .suggestions {
+    display: flex;
     flex-direction: column;
     align-items: center;
 }
@@ -20,6 +21,7 @@ main .suggestions {
 main .container.first {
     background-color: var(--color-2);
     height: 100%;
+    width: 100%;
 }
 
 main .box {
@@ -111,3 +113,28 @@ main .container .box .button:hover {
     background-color: rgba(225,225,225,0.4);
 }
 
+@media  (max-width: 670px ) {
+    main {
+        font-size: 70%;
+    }
+}
+
+@media  (max-width: 545px ) {
+    main .suggestions, main .suggestions .box, main .suggestions .box .table {
+        width: 100%;
+    }
+
+    main .suggestions .box .table {
+        font-size: 80%;
+    }
+
+    main .suggestions .box#suggestions {
+        max-width: 100vw;
+    }
+}
+
+@media  (max-width: 240px ) {
+    main .container .box input {
+        width: 100%;
+    }
+}

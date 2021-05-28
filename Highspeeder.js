@@ -107,8 +107,8 @@ function setup() {
     games.games[2].addNiveau("Chateau de Bowser")
 
     let games_serialized = JSON.stringify(games);
-    let suggestions_serialized = JSON.stringify(suggestions)
-
+    let suggestions_serialized = JSON.stringify(suggestions);
+    clearAll();
     localStorage.setItem("games", games_serialized);
     localStorage.setItem("suggestions", suggestions_serialized);
 
@@ -122,15 +122,16 @@ function clearAll() {
 let games_deserialized = JSON.parse(localStorage.getItem("games"));
 let suggestions_deserialized = JSON.parse(localStorage.getItem("suggestions"));
 
-if (games_deserialized === null) {
+if (!foo(games_deserialized) || !foo(suggestions_deserialized)) {
     console.log("setup")
     setup();
     games_deserialized = JSON.parse(localStorage.getItem("games"));
+    suggestions_deserialized = JSON.parse(localStorage.getItem("suggestions"));
 }
+
 
 let suggestions = suggestions_deserialized.suggestions;
 let games = games_deserialized.games;
-
 
 
 function updateGames() {

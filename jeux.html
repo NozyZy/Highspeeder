@@ -311,12 +311,12 @@
                     <option value="Country">Trier par pays</option>
                 </select>
             </label>
+            <div class="move">
+            <i class="fas fa-arrow-alt-circle-left fa-2x" onclick="leftBut()"></i>
+            <h3 class="titre-niveau">Titre</h3>
+            <i class="fas fa-arrow-alt-circle-right fa-2x" onclick="rightBut()"></i>
+        </div>
             <div class="box" id="highscores">
-                <div class="move">
-                    <i class="fas fa-arrow-alt-circle-left fa-2x" onclick="leftBut()"></i>
-                    <h3 class="titre-niveau">Titre</h3>
-                    <i class="fas fa-arrow-alt-circle-right fa-2x" onclick="rightBut()"></i>
-                </div>
                 <table class="table" id="scores-table">
                     <caption class="titre">Highscores</caption>
                     <thead>
@@ -329,7 +329,7 @@
                     </thead>
                     <tbody id="scores-body">
                     </tbody>
-                </table>
+                    </table>
             </div>
         </div>
         <div class="speedrun" id="speedrun">
@@ -607,25 +607,25 @@
                     <option value="Country">Trier par pays</option>
                 </select>
             </label>
+            <div class="move">
+            <i class="fas fa-arrow-alt-circle-left fa-2x" onclick="leftBut()"></i>
+            <h3 class="titre-niveau">Titre</h3>
+            <i class="fas fa-arrow-alt-circle-right fa-2x" onclick="rightBut()"></i>
+        </div>
             <div class="box" id="speedruns">
-                <div class="move">
-                    <i class="fas fa-arrow-alt-circle-left fa-2x" onclick="leftBut()"></i>
-                    <h3 class="titre-niveau">Titre</h3>
-                    <i class="fas fa-arrow-alt-circle-right fa-2x" onclick="rightBut()"></i>
-                </div>
                 <table class="table" id="speedruns-table">
-                    <caption class="titre">Speedruns</caption>
-                    <thead>
-                    <tr>
-                        <th>Rang</th>
-                        <th>Pseudo</th>
-                        <th>Temps</th>
-                        <th>Pays</th>
-                    </tr>
-                    </thead>
-                    <tbody id="times-body">
-                    </tbody>
-                </table>
+                        <caption class="titre">Speedruns</caption>
+                        <thead>
+                        <tr>
+                            <th>Rang</th>
+                            <th>Pseudo</th>
+                            <th>Temps</th>
+                            <th>Pays</th>
+                        </tr>
+                        </thead>
+                        <tbody id="times-body">
+                        </tbody>
+                    </table>
             </div>
         </div>
     </main>
@@ -797,13 +797,19 @@
         const pseudo = document.getElementById("score-pseudo")
         const pays = document.getElementById("score-pays")
 
-        if(!checkValidity([pseudo,score,pays])) {
+        if (!checkValidity([pseudo,score,pays])) {
             return false
         }
 
         if (parseInt(score.value) < 0 || isNaN(parseInt(score.value))) {
             alert("Le score n'est pas bon !")
             score.focus()
+            return false
+        }
+
+        if (pseudo.value.length > 32) {
+            alert("Votre pseudo doit contenir moins de 32 caractères !")
+            pseudo.focus()
             return false
         }
 
@@ -911,7 +917,14 @@
         const time = document.getElementById("time")
         const pseudo = document.getElementById("time-pseudo")
         const pays = document.getElementById("time-pays")
+
         if(!checkValidity([pseudo,time,pays])) {
+            return false
+        }
+
+        if (pseudo.value.length > 32) {
+            alert("Votre pseudo doit contenir moins de 32 caractères !")
+            pseudo.focus()
             return false
         }
 

@@ -104,14 +104,14 @@ main .games .box .game .titre-jeu {
         display: flex;
         flex-direction: column;
     }
+
+    main .games .box {
+        margin-bottom: 25px;
+    }
 }
 
 @media (max-width: 820px) {
-    main .titres {
-        width: 100%;
-    }
-
-    main .titres #grandtitre img {
+    main .titres, main .titres #grandtitre img {
         width: 100%;
     }
 }
