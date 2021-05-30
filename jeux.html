@@ -25,8 +25,8 @@
                 </label>
             </div>
         </header>
-
-    <main id="top">
+    <span id="top"></span>
+    <main>
         <div class="games" id="games-grid">
 
         </div>
@@ -804,12 +804,14 @@
         if (parseInt(score.value) < 0 || isNaN(parseInt(score.value))) {
             alert("Le score n'est pas bon !")
             score.focus()
+            score.select()
             return false
         }
 
         if (pseudo.value.length > 32) {
             alert("Votre pseudo doit contenir moins de 32 caractères !")
             pseudo.focus()
+            pseudo.select()
             return false
         }
 
@@ -925,6 +927,7 @@
         if (pseudo.value.length > 32) {
             alert("Votre pseudo doit contenir moins de 32 caractères !")
             pseudo.focus()
+            pseudo.select()
             return false
         }
 

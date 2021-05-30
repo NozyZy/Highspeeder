@@ -113,6 +113,10 @@ main .container .box .button:hover {
     background-color: rgba(225,225,225,0.4);
 }
 
+main .suggestions .box h5 {
+    text-align: center;
+}
+
 @media  (max-width: 670px ) {
     main {
         font-size: 70%;

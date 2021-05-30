@@ -24,8 +24,8 @@
             </label>
         </div>
     </header>
-
-    <main id="top">
+    <span id="top"></span>
+    <main>
         <div class="suggestions">
             <div class="container first">
                 <form name="newSuggestion" action="" class="box" id="new-suggestion" onsubmit="return false">
@@ -55,6 +55,7 @@
                     <tbody id="suggestions-body">
                     </tbody>
                 </table>
+                <h5>Click to zoom and copy link.</h5>
             </div>
         </div>
     </main>
@@ -73,13 +74,15 @@
 <script type="text/javascript">
 
     function refuseSuggestion(name) {
-        for (let i = 0; i < suggestions.length; i++) {
-            if (suggestions[i].name === name) {
-                suggestions[i].validate = -1
+        if(admin()) {
+            for (let i = 0; i < suggestions.length; i++) {
+                if (suggestions[i].name === name) {
+                    suggestions[i].validate = -1
+                }
             }
+            updateSuggestions()
+            fillSuggestions()
         }
-        updateSuggestions()
-        fillSuggestions()
     }
 
     function addSuggestion() {
@@ -93,11 +96,37 @@
         if (name.value.length > 32) {
             alert("Le nom du jeu est trop long !")
             name.focus()
+            name.select()
             return false
         }
 
         if (!foo(suggestions)) {
+            let suggestions = {
+                suggestions : []
+            }
+            let suggestions_serialized = JSON.stringify(suggestions);
+            localStorage.setItem("suggestions", suggestions_serialized);
+        }
 
+        for (let i = 0; i < suggestions.length; i++) {
+            console.log(suggestions[i].name, name.value)
+            if (suggestions[i].name === name.value) {
+                alert("Cette suggestion exsite déjà !")
+                name.focus()
+                name.select()
+                return false
+            }
+        }
+
+        for (let i = 0; i < games.length; i++) {
+            console.log(games[i].name, name.value)
+
+            if (games[i].name === name.value) {
+                alert("Ce jeu exsite déjà !")
+                name.focus()
+                name.select()
+                return false
+            }
         }
 
         suggestions.push(new Suggestion(name.value, image.value))
@@ -131,9 +160,16 @@
 
             newName.textContent = games[i].name
             newImage.style.transition =  "all 0.5s ease-out"
+            newImage.style.fontSize = "0"
+            newImage.textContent = games[i].image
             newImage.style.backgroundImage = "url('" + games[i].image + "')"
             newImage.addEventListener("click", function () {
                 newImage.style.transform = "scale(3)"
+                try {
+                    navigator.clipboard.writeText(newImage.textContent);
+                } catch(err) {
+                    alert('Error in copying text: ', err);
+                }
             })
             newImage.addEventListener("mouseout", function () {
                 newImage.style.transform = "initial"
@@ -161,7 +197,21 @@
 
             newName.textContent = s.name
             newImage.style.transition =  "all 0.5s ease-out"
+            newImage.style.fontSize = "0"
+            newImage.textContent = suggestions[i].image
             newImage.style.backgroundImage = "url('" + s.image + "'), url('https://ih0.redbubble.net/image.481333419.2068/ap,550x550,16x12,1,transparent,t.u1.png')"
+            newImage.addEventListener("click", function () {
+                newImage.style.transform = "scale(3)"
+                try {
+                    navigator.clipboard.writeText(newImage.textContent);
+                } catch(err) {
+                    alert('Error in copying text: ', err);
+                }
+
+            })
+            newImage.addEventListener("mouseout", function () {
+                newImage.style.transform = "initial"
+            })
             if (s.validate === -1) {
                 newValidity.textContent = "Refusé ❌"
                 newValidity.style.color = "red"
