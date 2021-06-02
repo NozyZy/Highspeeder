@@ -148,7 +148,7 @@ main .box .table {
 main .box .table tr, main .box .table th {
     font-size: 1.3em;
     padding: 20px;
-
+    text-align: center;
 }
 
 main .box .table td {
@@ -221,9 +221,15 @@ main .container .box .button:hover {
     background-color: rgba(225,225,225,0.4);
 }
 
-@media (max-width: 500px) {
+@media  (max-width: 800px ) {
     main {
         font-size: 80%;
+    }
+}
+
+@media (max-width: 600px) {
+    main {
+        font-size: 70%;
     }
 
     main .menu {
@@ -232,6 +238,12 @@ main .container .box .button:hover {
 
     main .menu .navigation {
         margin: 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    main .box .table {
+        font-size: 85%;
     }
 }
 

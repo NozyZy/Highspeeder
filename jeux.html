@@ -668,16 +668,19 @@
     }
 
     function removeGame(name) {
-        for (let i = 0; i < games.length; i ++) {
-            if (games[i].name === name) {
-                games.splice(i, 1);
-                i--;
+        if(admin()) {
+            for (let i = 0; i < games.length; i ++) {
+                if (games[i].name === name) {
+                    games.splice(i, 1);
+                    i--;
+                }
             }
+            let games_serialized = JSON.stringify(games_deserialized);
+            localStorage.setItem("games", games_serialized);
+            createGameGrid();
+            return true;
         }
-        let games_serialized = JSON.stringify(games_deserialized);
-        localStorage.setItem("games", games_serialized);
-        createGameGrid();
-        return true;
+        return false;
     }
 
     function addGameLevel(gameName, levelName) {
@@ -703,6 +706,64 @@
             } else { alert("Ce jeu n'exite pas !"); }
         }
         return isGood;
+    }
+
+    function removeGameLevelScores(name, levelname) {
+        if(admin()) {
+            for (let i = 0; i < games.length; i ++) {
+                if (games[i].name === name) {
+                    for (let j = 0; j < games[i].niveaux.length; j++) {
+                        if (games[i].niveaux[j].name === levelname) {
+                            games[i].niveaux[j].highscore = []
+                        }
+                    }
+                }
+            }
+            updateGames();
+            showHighscore();
+            fillHighscores()
+            return true;
+        }
+        return false;
+    }
+
+    function removeGameLevelTimes(name, levelname) {
+        if(admin()) {
+            for (let i = 0; i < games.length; i ++) {
+                if (games[i].name === name) {
+                    for (let j = 0; j < games[i].niveaux.length; j++) {
+                        if (games[i].niveaux[j].name === levelname) {
+                            games[i].niveaux[j].speedrun = []
+                        }
+                    }
+                }
+            }
+            updateGames();
+            showHighscore();
+            fillHighscores()
+            return true;
+        }
+        return false;
+    }
+
+    function removeGameLevel(name, levelname) {
+        if(admin()) {
+            for (let i = 0; i < games.length; i ++) {
+                if (games[i].name === name) {
+                    for (let j = 0; j < games[i].niveaux.length; j++) {
+                        if (games[i].niveaux[j].name === levelname) {
+                            games[i].niveaux.splice(j, 1)
+                        }
+                    }
+                }
+            }
+            currentLevel--;
+            updateGames();
+            showHighscore();
+            fillHighscores()
+            return true;
+        }
+        return false;
     }
 
     const highscore = document.getElementById("highscore");

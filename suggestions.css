@@ -1,4 +1,4 @@
-main {
+/*main {
     position: relative;
     display : flex;
     justify-content: center;
@@ -10,6 +10,20 @@ main {
     max-width: 90vw;
     min-width: 20vw;
     width: 90%;
+}*/
+
+main {
+    position: relative;
+    display : block;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    margin-top: 25px;
+    max-width: 70vw;
+    min-width: 20vw;
+    width: 100%;
 }
 
 main .suggestions {
@@ -21,12 +35,10 @@ main .suggestions {
 main .container.first {
     background-color: var(--color-2);
     height: 100%;
-    width: 100%;
 }
 
 main .box {
     padding: 5px;
-    display: flex;
     flex-direction: column;
     justify-content: center;
 }
@@ -55,13 +67,14 @@ main .box .table {
 }
 
 main .box .table tr, main .box .table th {
-    font-size: 1.3em;
+    font-size: 1.5em;
     padding: 20px 40px;
+    text-align: center;
 }
 
 main .box .table td {
     font-size: 1.3em;
-    padding: 20px;
+    padding: 50px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -117,13 +130,23 @@ main .suggestions .box h5 {
     text-align: center;
 }
 
-@media  (max-width: 670px ) {
-    main {
-        font-size: 70%;
+@media  (max-width: 1350px ) {
+    main .box .table td {
+        padding: 30px;
     }
 }
 
-@media  (max-width: 545px ) {
+@media  (max-width: 800px ) {
+    main {
+        font-size: 80%;
+    }
+}
+
+@media  (max-width: 700px ) {
+    main .box .table td {
+        padding: 20px;
+    }
+
     main .suggestions, main .suggestions .box, main .suggestions .box .table {
         width: 100%;
     }

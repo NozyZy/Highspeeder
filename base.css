@@ -15,6 +15,10 @@ main {
     width: 80%;
 }
 
+
+
+
+
 main .games {
     display: flex;
     flex-direction: row;
@@ -23,6 +27,8 @@ main .games {
     width: 100%;
     margin-top: 30px;
 }
+
+
 
 main .titres {
     display: flex;
@@ -41,10 +47,24 @@ main .titres #grandtitre {
 
 main .titres #petittitre {
     display: flex;
+    flex-direction: column;
     padding: 5px;
-    margin : 5px;
+    margin : 15px;
     font-size: 1.5em;
     width: 80%;
+    line-height: 30px;
+    font-weight: 600;
+    color: #e8e8e8;
+}
+
+main .titres #petittitre p {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+main .titres #petittitre p .colored{
+    color: #C68FFA;
+    font-style: italic;
 }
 
 main .games .box {
