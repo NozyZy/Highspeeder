@@ -19,9 +19,12 @@
         </nav>
         <div class="search">
             <i class="fa fa-search" aria-hidden="true"></i>
-            <label for="searchbar">
-                <input id="searchbar" type="text" placeholder="Rechercher">
-            </label>
+            <form action="https://youtu.be/dQw4w9WgXcQ">
+                <label for="searchbar">
+                    <input id="searchbar" type="text" placeholder="Rechercher">
+                    <input type="submit" style="display: none">
+                </label>
+            </form>
         </div>
     </header>
     <span id="top"></span>
@@ -57,25 +60,24 @@
             <h6>Made with &#128153; by Quentin and Maxime</h6>
         </div>
     </footer>
-</body>
-<script src="Highspeeder.js" charset="utf-8"></script>
-<script type="text/javascript">
+    <script src="Highspeeder.js"></script>
+    <script>
 
-    function locationURL() { location.href = 'jeux.html'; }
+        function locationURL() { location.href = 'jeux.html'; }
 
-    function son() {
-        let monElementAudio = document.getElementById('musique');
-        monElementAudio.volume = 0.01;
-        monElementAudio.play();
-    }
-
-    function lastGame() {
-        const taille = games.length-1
-        const grid = document.querySelector('#dernier_jeu_add');
-
-        while(grid.firstChild) {
-            grid.removeChild(grid.firstChild);
+        function son() {
+            let monElementAudio = document.getElementById('musique');
+            monElementAudio.volume = 0.01;
+            monElementAudio.play();
         }
+
+        function lastGame() {
+            const taille = games.length-1
+            const grid = document.querySelector('#dernier_jeu_add');
+
+            while(grid.firstChild) {
+                grid.removeChild(grid.firstChild);
+            }
             const g = games[taille];
             const newImageDiv = document.createElement('div');
             const newTextDiv = document.createElement('div');
@@ -91,60 +93,62 @@
             grid.appendChild(newImageDiv);
         }
 
-    function top_tendeance() {
-        let bestscore = 0;
-        let index = 0;
-        let score = 0;
+        function top_tendeance() {
+            let bestscore = 0;
+            let index = 0;
+            let score = 0;
 
-        for(let i = 0 ; i < games.length; i++) {
-            score = 0;
-            for(let o=0; o < games[i].niveaux.length;o++) {
-                for(let j=0; j < games[i].niveaux[o].highscore.length; j++) {
-                    score = score + 1;
+            for(let i = 0 ; i < games.length; i++) {
+                score = 0;
+                for(let o=0; o < games[i].niveaux.length;o++) {
+                    for(let j=0; j < games[i].niveaux[o].highscore.length; j++) {
+                        score = score + 1;
+                    }
+                }
+                for(let o=0; o < games[i].niveaux.length;o++){
+                    for (let y=0; y < games[i].niveaux[o].speedrun.length; y++) {
+                        score = score + 1;
+                    }
+                }
+
+                if (score > bestscore) {
+                    bestscore = score;
+                    index = i;
                 }
             }
-            for(let o=0; o < games[i].niveaux.length;o++){
-                for (let y=0; y < games[i].niveaux[o].speedrun.length; y++) {
-                    score = score + 1;
-                }
-            }
-
-            if (score > bestscore) {
-                bestscore = score;
-                index = i;
-            }
+            return index;
         }
-        return index;
-    }
 
-    function TendeanceGame() {
-        var taille = top_tendeance();
-        const grid = document.querySelector('#jeu_du_moment');
+        function TendeanceGame() {
+            var taille = top_tendeance();
+            const grid = document.querySelector('#jeu_du_moment');
 
-        while(grid.firstChild) {
-            grid.removeChild(grid.firstChild);
+            while(grid.firstChild) {
+                grid.removeChild(grid.firstChild);
+            }
+            const g = games[taille];
+            const newImageDiv = document.createElement('div');
+            const newTextDiv = document.createElement('div');
+            const newTitleDiv = document.createElement('h3');
+
+            newTitleDiv.textContent = g.name;
+            newTitleDiv.className = "titre-jeu";
+            newTextDiv.append(newTitleDiv);
+            newTextDiv.className = "text-jeu";
+            newImageDiv.append(newTextDiv);
+            newImageDiv.className = "image-jeu";
+            newImageDiv.style.backgroundImage = "url('" + g.image + "')"
+            grid.appendChild(newImageDiv);
         }
-        const g = games[taille];
-        const newImageDiv = document.createElement('div');
-        const newTextDiv = document.createElement('div');
-        const newTitleDiv = document.createElement('h3');
 
-        newTitleDiv.textContent = g.name;
-        newTitleDiv.className = "titre-jeu";
-        newTextDiv.append(newTitleDiv);
-        newTextDiv.className = "text-jeu";
-        newImageDiv.append(newTextDiv);
-        newImageDiv.className = "image-jeu";
-        newImageDiv.style.backgroundImage = "url('" + g.image + "')"
-        grid.appendChild(newImageDiv);
-    }
+        function afficherjeu() {
+            TendeanceGame();
+            lastGame();
+        }
 
-    function afficherjeu() {
-        TendeanceGame();
-        lastGame();
-    }
+    </script>
+</body>
 
-</script>
 
 
 

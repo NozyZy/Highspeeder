@@ -21,7 +21,7 @@ main .affichage {
     margin-bottom: 35px;
     justify-content: center;
     flex-direction: column;
-    padding: 40px;
+    padding: 60px;
     top: 25px;
     /*background-color: steelblue;*/
     max-height: 90vh;
@@ -44,7 +44,7 @@ main .affichage::before {
     overflow: hidden;
 }
 
-main .affichage .repartition {
+main .affichage .equipe, main .affichage .repartition, main .affichage .complement {
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
@@ -60,24 +60,16 @@ main .affichage .repartition .person {
     margin: 5px;
 }
 
-main .affichage .repartition .person li {
+main .affichage .repartition .person li, main .affichage .equipe li {
     list-style: none;
     margin: 0 10px;
 }
-/* Si affichage avec pleins de bordure
 
-ol {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
+main .affichage p, main .affichage li {
+    margin-left: 25px;
+    margin-right: 25px;
 }
-#Equipe, #Repartition, #Complement {
-    display: flex;
-    flex-direction: column;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border: 5px solid #A0A0A0;
-    background: #C0C0C0;
 
-}*/
+main .affichage h2 {
+    margin-bottom: 5px;
+}

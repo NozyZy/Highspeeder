@@ -20,9 +20,12 @@
             </nav>
             <div class="search">
                 <i class="fa fa-search" aria-hidden="true"></i>
-                <label for="searchbar">
-                    <input id="searchbar" type="text" placeholder="Rechercher">
-                </label>
+                <form action="https://youtu.be/dQw4w9WgXcQ">
+                    <label for="searchbar">
+                        <input id="searchbar" type="text" placeholder="Rechercher">
+                        <input type="submit" style="display: none">
+                    </label>
+                </form>
             </div>
         </header>
     <span id="top"></span>
@@ -38,7 +41,7 @@
         </div>
         <div class="highscore" id="highscore">
             <div class="container first">
-                <form name="newScore" action="" class="box" id="new-score" onsubmit="return false">
+                <form name="newScore" action="/" class="box" id="new-score" onsubmit="return false">
                     <div class="container">
                         <label>
                             <input type="text" name="pseudo" id="score-pseudo" placeholder="Votre pseudo..." required="">
@@ -334,13 +337,13 @@
         </div>
         <div class="speedrun" id="speedrun">
             <div class="container first">
-                <form name="newScore" action="" class="box" id="new-speedrun" onsubmit="return false">
+                <form name="newScore" action="/" class="box" id="new-speedrun" onsubmit="return false">
                     <div class="container">
                         <label>
                             <input type="text" name="pseudo" id="time-pseudo" placeholder="Votre pseudo..." required="">
                         </label>
                         <label>
-                            <input type="time" name="time" id="time" step="1" value="00:00:00" placeholder="Votre temps(En seconde)..." required="">
+                            <input type="time" name="time" id="time" step="1" value="00:00:00" required="">
                         </label>
                         <label>
                             <select id="time-pays" name="pays">
@@ -639,515 +642,481 @@
             <h6>Made with &#128153; by Quentin and Maxime</h6>
         </div>
     </footer>
+    <script src="Highspeeder.js"></script>
+    <script>
 
-</body>
-<script src="Highspeeder.js" charset="utf-8"></script>
-<script type="text/javascript">
+        let currentGame
+        let currentLevel = 0
 
-    let currentGame
-    let currentLevel = 0
-
-    function addGame(name, image) {
-        let isGood = false;
-        if (admin()) {
-            while (name.length > 32) {
-                name = prompt("Le titre doit contenir moins de 32 caractères\nSaisissez le de nouveau : ");
-            }
-            games.push(new Game(name, image));
-            for (let i = 0; i < suggestions.length; i++) {
-                if (suggestions[i].name === name) {
-                    suggestions.splice(i, 1)
-                    updateSuggestions()
+        function addGame(name, image) {
+            let isGood = false;
+            if (admin()) {
+                while (name.length > 32) {
+                    name = prompt("Le titre doit contenir moins de 32 caractères\nSaisissez le de nouveau : ");
                 }
-            }
-            updateGames();
-            createGameGrid();
-            isGood = true;
-        }
-        return isGood;
-    }
-
-    function removeGame(name) {
-        if(admin()) {
-            for (let i = 0; i < games.length; i ++) {
-                if (games[i].name === name) {
-                    games.splice(i, 1);
-                    i--;
+                games.push(new Game(name, image));
+                for (let i = 0; i < suggestions.length; i++) {
+                    if (suggestions[i].name === name) {
+                        suggestions.splice(i, 1)
+                        updateSuggestions()
+                    }
                 }
+                updateGames();
+                createGameGrid();
+                isGood = true;
             }
-            let games_serialized = JSON.stringify(games_deserialized);
-            localStorage.setItem("games", games_serialized);
-            createGameGrid();
-            return true;
+            return isGood;
         }
-        return false;
-    }
 
-    function addGameLevel(gameName, levelName) {
-        let isGood = false;
-        if (admin()) {
-            while (name.length > 32) {
-                name = prompt("Le titre doit contenir moins de 32 caractères\nSaisissez le de nouveau : ");
+        function removeGame(name) {
+            if(admin()) {
+                for (let i = 0; i < games.length; i ++) {
+                    if (games[i].name === name) {
+                        games.splice(i, 1);
+                        i--;
+                    }
+                }
+                let games_serialized = JSON.stringify(games_deserialized);
+                localStorage.setItem("games", games_serialized);
+                createGameGrid();
+                return true;
             }
-            let game = Game.from(games.find(game => game.name === gameName));
-            if (game !== undefined) {
-                let level = Niveau.from(games.find(level => level.name === levelName));
-                if (level.name === undefined) {
-                    game.addNiveau(levelName);
-                    for (let i = 0; i < games.length; i++) {
-                        if (games[i].name === gameName) {
-                            games[i] = game;
-                            isGood = true;
+            return false;
+        }
+
+        function addGameLevel(gameName, levelName) {
+            let isGood = false;
+            if (admin()) {
+                while (name.length > 32) {
+                    name = prompt("Le titre doit contenir moins de 32 caractères\nSaisissez le de nouveau : ");
+                }
+                let game = Game.from(games.find(game => game.name === gameName));
+                if (game !== undefined) {
+                    let level = Niveau.from(games.find(level => level.name === levelName));
+                    if (level.name === undefined) {
+                        game.addNiveau(levelName);
+                        for (let i = 0; i < games.length; i++) {
+                            if (games[i].name === gameName) {
+                                games[i] = game;
+                                isGood = true;
+                            }
+                        }
+                        updateGames();
+                    }
+                    else { alert('Ce niveau existe déjà !'); }
+                } else { alert("Ce jeu n'exite pas !"); }
+            }
+            return isGood;
+        }
+
+        function removeGameLevelScores(name, levelname) {
+            if(admin()) {
+                for (let i = 0; i < games.length; i ++) {
+                    if (games[i].name === name) {
+                        for (let j = 0; j < games[i].niveaux.length; j++) {
+                            if (games[i].niveaux[j].name === levelname) {
+                                games[i].niveaux[j].highscore = []
+                            }
                         }
                     }
+                }
+                updateGames();
+                showHighscore();
+                fillHighscores()
+                return true;
+            }
+            return false;
+        }
+
+        function removeGameLevelTimes(name, levelname) {
+            if(admin()) {
+                for (let i = 0; i < games.length; i ++) {
+                    if (games[i].name === name) {
+                        for (let j = 0; j < games[i].niveaux.length; j++) {
+                            if (games[i].niveaux[j].name === levelname) {
+                                games[i].niveaux[j].speedrun = []
+                            }
+                        }
+                    }
+                }
+                updateGames();
+                showHighscore();
+                fillHighscores()
+                return true;
+            }
+            return false;
+        }
+
+        function removeGameLevel(name, levelname) {
+            if(admin()) {
+                for (let i = 0; i < games.length; i ++) {
+                    if (games[i].name === name) {
+                        for (let j = 0; j < games[i].niveaux.length; j++) {
+                            if (games[i].niveaux[j].name === levelname) {
+                                games[i].niveaux.splice(j, 1)
+                            }
+                        }
+                    }
+                }
+                currentLevel--;
+                updateGames();
+                showHighscore();
+                fillHighscores()
+                return true;
+            }
+            return false;
+        }
+
+        const highscore = document.getElementById("highscore");
+        const speedrun = document.getElementById("speedrun");
+        const gamesGrid = document.getElementById("games-grid");
+        const highscoreButton = document.getElementById("highscore-btn");
+        const speedrunButton = document.getElementById("speedrun-btn");
+        const buttons = document.getElementById("menu-btns");
+        const caption = document.getElementsByClassName("titre");
+        const nomNiveau = document.getElementsByClassName("titre-niveau");
+
+        function setCaption() {
+            if (foo(currentGame)) {
+                for (let i = 0; i < caption.length; i++) {
+                    caption[i].textContent = currentGame.name;
+                }
+                for (let i = 0; i < nomNiveau.length; i++) {
+                    if (foo(currentGame.niveaux) && foo(currentGame.niveaux[currentLevel])) {
+                        nomNiveau[i].textContent = currentGame.niveaux[currentLevel].name;
+                    } else {
+                        nomNiveau[i].textContent = "Pas de niveaux ! Contactez admin"
+                    }
+                }
+                document.body.style.backgroundColor = "rgba(36,71,123,0.5)"
+                document.body.style.backgroundImage = "url('" + currentGame.image + "')"
+            }
+            return false
+        }
+
+        function showHighscore() {
+            highscore.style.display = "flex";
+            speedrun.style.display = "none";
+            gamesGrid.style.display = "none";
+            buttons.style.display = "flex";
+            highscoreButton.style.backgroundColor = "var(--color-2)";
+            speedrunButton.style.backgroundColor = "white";
+        }
+
+        function showSpeedrun() {
+            highscore.style.display = "none";
+            speedrun.style.display = "flex";
+            gamesGrid.style.display = "none";
+            buttons.style.display = "flex";
+            highscoreButton.style.backgroundColor = "white";
+            speedrunButton.style.backgroundColor = "var(--color-2)";
+        }
+
+        function showgames() {
+            highscore.style.display = "none";
+            speedrun.style.display = "none";
+            gamesGrid.style.display = "grid";
+            buttons.style.display = "none";
+        }
+
+        function createGameGrid() {
+            const grid = document.querySelector('#games-grid');
+
+            while(grid.firstChild) {
+                grid.removeChild(grid.firstChild);
+            }
+
+            for (let i = 0; i < games.length; i++) {
+                const g = games[i];
+                const newGameDiv = document.createElement('div');
+                const newImageDiv = document.createElement('div');
+                const newTextDiv = document.createElement('div');
+                const newTitleDiv = document.createElement('h3');
+
+                newTitleDiv.textContent = g.name;
+                newTitleDiv.className = "titre-jeu";
+                newTextDiv.append(newTitleDiv);
+                newTextDiv.className = "text-jeu";
+                newImageDiv.append(newTextDiv);
+                newImageDiv.className = "image-jeu";
+                newImageDiv.style.backgroundImage = "url('" + g.image + "')"
+                newGameDiv.append(newImageDiv);
+                newGameDiv.className = "game";
+                newGameDiv.onclick = function() {
+                    currentGame = g;
+                    setCaption();
+                    fillHighscores();
+                    fillTimes();
+                    showAndHideButtons();
+                    showHighscore();
+                };
+                grid.appendChild(newGameDiv);
+            }
+        }
+
+        function addScore() {
+            const score = document.getElementById("score")
+            const pseudo = document.getElementById("score-pseudo")
+            const pays = document.getElementById("score-pays")
+
+            if (!checkValidity([pseudo,score,pays])) {
+                return false
+            }
+
+            if (parseInt(score.value) < 0 || isNaN(parseInt(score.value))) {
+                alert("Le score n'est pas bon !")
+                score.focus()
+                score.select()
+                return false
+            }
+
+            if (pseudo.value.length > 32) {
+                alert("Votre pseudo doit contenir moins de 32 caractères !")
+                pseudo.focus()
+                pseudo.select()
+                return false
+            }
+
+            currentGame.niveaux[currentLevel].highscore.push(new Highscore(score.value, pseudo.value, pays.value))
+
+            fillHighscores()
+            document.getElementById("score").value = ""
+            document.getElementById("score-pays").value = ""
+            document.getElementById("score-pseudo").value = ""
+
+            return true
+        }
+
+        function removeAllScores () {
+            const tbody = document.querySelector('#scores-body')
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild)
+            }
+        }
+
+        function sortScoresRank() {
+            currentGame.niveaux[currentLevel].highscore.sort((a,b) => b.score - a.score);
+            for (let k = 0; k < currentGame.niveaux[currentLevel].highscore.length; k++) {
+                currentGame.niveaux[currentLevel].highscore[k].rank = k+1;
+            }
+            updateGames();
+        }
+
+        function sortScoresName() {
+            currentGame.niveaux[currentLevel].highscore.sort(function (a, b) {
+                a = a.pseudo.toLowerCase()
+                b = b.pseudo.toLowerCase()
+                if (a > b) {
+                    return 1;
+                }
+                if (b > a) {
+                    return -1;
+                }
+                return 0;
+            });
+            updateGames();
+        }
+
+        function sortScoresCountry() {
+            currentGame.niveaux[currentLevel].highscore.sort(function (a, b) {
+                if (a.pays > b.pays) {
+                    return 1;
+                }
+                if (b.pays > a.pays) {
+                    return -1;
+                }
+                return 0;
+            });
+            updateGames();
+        }
+
+        function sortScores() {
+            const selectSort = document.getElementById("score-sort").value
+            if (selectSort === "Rank") sortScoresRank()
+            else if (selectSort === "Name") sortScoresName()
+            else if (selectSort === "Country") sortScoresCountry()
+        }
+
+        function fillHighscores() {
+            if (foo(currentGame) &&
+                foo(currentGame.niveaux) &&
+                foo(currentGame.niveaux[currentLevel]) &&
+                foo(currentGame.niveaux[currentLevel].highscore)) {
+
+                removeAllScores()
+                sortScoresRank()
+                sortScores()
+                setCaption()
+                let gameScore = currentGame.niveaux[currentLevel].highscore
+                for (let i = 0; i < gameScore.length; i++) {
+                    let newItem = document.createElement('tr')
+                    let newRank = document.createElement('td')
+                    let newPseudo = document.createElement('td')
+                    let newScore = document.createElement('td')
+                    let newCountry = document.createElement('td')
+                    newRank.textContent = "#" + gameScore[i].rank
+                    newRank.style.textAlign = "center"
+                    if (gameScore[i].rank === 1) {
+                        newRank.style.color = "goldenrod"
+                    } else if (gameScore[i].rank === 2){
+                        newRank.style.color = "silver"
+                    } else if (gameScore[i].rank === 3){
+                        newRank.style.color = "saddlebrown"
+                    }
+                    newPseudo.textContent = gameScore[i].pseudo
+                    newScore.textContent = gameScore[i].score
+                    newCountry.textContent = gameScore[i].pays
+
+                    newItem.append(newRank, newPseudo, newScore, newCountry)
+                    const table = document.querySelector("#scores-body")
+                    table.appendChild(newItem)
                     updateGames();
                 }
-                else { alert('Ce niveau existe déjà !'); }
-            } else { alert("Ce jeu n'exite pas !"); }
-        }
-        return isGood;
-    }
+            } else { console.log("Ce score n'existe pas !") }
 
-    function removeGameLevelScores(name, levelname) {
-        if(admin()) {
-            for (let i = 0; i < games.length; i ++) {
-                if (games[i].name === name) {
-                    for (let j = 0; j < games[i].niveaux.length; j++) {
-                        if (games[i].niveaux[j].name === levelname) {
-                            games[i].niveaux[j].highscore = []
-                        }
-                    }
-                }
+
+        }
+
+        function addTime() {
+            const time = document.getElementById("time")
+            const pseudo = document.getElementById("time-pseudo")
+            const pays = document.getElementById("time-pays")
+
+            if(!checkValidity([pseudo,time,pays])) {
+                return false
+            }
+
+            if (pseudo.value.length > 32) {
+                alert("Votre pseudo doit contenir moins de 32 caractères !")
+                pseudo.focus()
+                pseudo.select()
+                return false
+            }
+
+            if (time.value.toString().length <= 5) {
+                time.value += ":00"
+            }
+            currentGame.niveaux[currentLevel].speedrun.push(new Speedrun(time.value, pseudo.value, pays.value))
+
+            fillTimes()
+
+            document.getElementById("time").value = "00:00:00"
+            document.getElementById("time-pays").value = ""
+            document.getElementById("time-pseudo").value = ""
+
+            return true
+        }
+
+        function removeAllTimes () {
+            const tbody = document.querySelector('#times-body')
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild)
+            }
+        }
+
+        function sortTimesRank() {
+            currentGame.niveaux[currentLevel].speedrun.sort((a,b) =>
+                (a.temps < b.temps) ? -1 : ((a.temps > b.temps) ? 1 : 0));
+            for (let k = 0; k < currentGame.niveaux[currentLevel].speedrun.length; k++) {
+                currentGame.niveaux[currentLevel].speedrun[k].rank = k+1;
             }
             updateGames();
-            showHighscore();
-            fillHighscores()
-            return true;
         }
-        return false;
-    }
 
-    function removeGameLevelTimes(name, levelname) {
-        if(admin()) {
-            for (let i = 0; i < games.length; i ++) {
-                if (games[i].name === name) {
-                    for (let j = 0; j < games[i].niveaux.length; j++) {
-                        if (games[i].niveaux[j].name === levelname) {
-                            games[i].niveaux[j].speedrun = []
-                        }
-                    }
+        function sortTimesName() {
+            currentGame.niveaux[currentLevel].speedrun.sort(function (a, b) {
+                a = a.pseudo.toLowerCase()
+                b = b.pseudo.toLowerCase()
+                if (a > b) {
+                    return 1;
                 }
-            }
+                if (b > a) {
+                    return -1;
+                }
+                return 0;
+            });
             updateGames();
-            showHighscore();
-            fillHighscores()
-            return true;
         }
-        return false;
-    }
 
-    function removeGameLevel(name, levelname) {
-        if(admin()) {
-            for (let i = 0; i < games.length; i ++) {
-                if (games[i].name === name) {
-                    for (let j = 0; j < games[i].niveaux.length; j++) {
-                        if (games[i].niveaux[j].name === levelname) {
-                            games[i].niveaux.splice(j, 1)
-                        }
-                    }
+        function sortTimesCountry() {
+            currentGame.niveaux[currentLevel].speedrun.sort(function (a, b) {
+                if (a.pays > b.pays) {
+                    return 1;
                 }
-            }
-            currentLevel--;
+                if (b.pays > a.pays) {
+                    return -1;
+                }
+                return 0;
+            });
             updateGames();
-            showHighscore();
-            fillHighscores()
-            return true;
         }
-        return false;
-    }
 
-    const highscore = document.getElementById("highscore");
-    const speedrun = document.getElementById("speedrun");
-    const gamesGrid = document.getElementById("games-grid");
-    const highscoreButton = document.getElementById("highscore-btn");
-    const speedrunButton = document.getElementById("speedrun-btn");
-    const buttons = document.getElementById("menu-btns");
-    const caption = document.getElementsByClassName("titre");
-    const nomNiveau = document.getElementsByClassName("titre-niveau");
+        function sortTimes() {
+            const selectSort = document.getElementById("time-sort").value
+            if (selectSort === "Rank") sortTimesRank()
+            else if (selectSort === "Name") sortTimesName()
+            else if (selectSort === "Country") sortTimesCountry()
+        }
 
-    function setCaption() {
-        if (foo(currentGame)) {
-            for (let i = 0; i < caption.length; i++) {
-                caption[i].textContent = currentGame.name;
-            }
-            for (let i = 0; i < nomNiveau.length; i++) {
-                if (foo(currentGame.niveaux) && foo(currentGame.niveaux[currentLevel])) {
-                    nomNiveau[i].textContent = currentGame.niveaux[currentLevel].name;
-                } else {
-                    nomNiveau[i].textContent = "Pas de niveaux ! Contactez admin"
+        function fillTimes() {
+            if (foo(currentGame) &&
+                foo(currentGame.niveaux) &&
+                foo(currentGame.niveaux[currentLevel]) &&
+                foo(currentGame.niveaux[currentLevel].speedrun)) {
+
+                removeAllTimes()
+                sortTimesRank()
+                sortTimes()
+                setCaption()
+                let gameTime = currentGame.niveaux[currentLevel].speedrun
+                for (let i = 0; i < gameTime.length; i++) {
+                    let newItem = document.createElement('tr')
+                    let newRank = document.createElement('td')
+                    let newPseudo = document.createElement('td')
+                    let newTime = document.createElement('td')
+                    let newCountry = document.createElement('td')
+                    newRank.textContent = "#" + gameTime[i].rank
+                    newRank.style.textAlign = "center"
+                    if (gameTime[i].rank === 1) {
+                        newRank.style.color = "goldenrod"
+                    } else if (gameTime[i].rank === 2){
+                        newRank.style.color = "silver"
+                    } else if (gameTime[i].rank === 3){
+                        newRank.style.color = "saddlebrown"
+                    }
+                    newPseudo.textContent = gameTime[i].pseudo
+                    newTime.textContent = gameTime[i].temps
+                    newCountry.textContent = gameTime[i].pays
+
+                    newItem.append(newRank, newPseudo, newTime, newCountry)
+                    const table = document.querySelector("#times-body")
+                    table.appendChild(newItem)
+                    updateGames();
                 }
-            }
-            document.body.style.backgroundColor = "rgba(36,71,123,0.5)"
-            document.body.style.backgroundImage = "url('" + currentGame.image + "')"
-        }
-        return false
-    }
+            } else { console.log("Ce temps n'existe pas !") }
 
-    function showHighscore() {
-        highscore.style.display = "flex";
-        speedrun.style.display = "none";
-        gamesGrid.style.display = "none";
-        buttons.style.display = "flex";
-        highscoreButton.style.backgroundColor = "var(--color-2)";
-        speedrunButton.style.backgroundColor = "white";
-    }
 
-    function showSpeedrun() {
-        highscore.style.display = "none";
-        speedrun.style.display = "flex";
-        gamesGrid.style.display = "none";
-        buttons.style.display = "flex";
-        highscoreButton.style.backgroundColor = "white";
-        speedrunButton.style.backgroundColor = "var(--color-2)";
-    }
-
-    function showgames() {
-        highscore.style.display = "none";
-        speedrun.style.display = "none";
-        gamesGrid.style.display = "grid";
-        buttons.style.display = "none";
-    }
-
-    function createGameGrid() {
-        const grid = document.querySelector('#games-grid');
-
-        while(grid.firstChild) {
-            grid.removeChild(grid.firstChild);
         }
 
-        for (let i = 0; i < games.length; i++) {
-            const g = games[i];
-            const newGameDiv = document.createElement('div');
-            const newImageDiv = document.createElement('div');
-            const newTextDiv = document.createElement('div');
-            const newTitleDiv = document.createElement('h3');
+        const leftButtons = document.getElementsByClassName("fa-arrow-alt-circle-left")
+        const rightButtons = document.getElementsByClassName("fa-arrow-alt-circle-right")
 
-            newTitleDiv.textContent = g.name;
-            newTitleDiv.className = "titre-jeu";
-            newTextDiv.append(newTitleDiv);
-            newTextDiv.className = "text-jeu";
-            newImageDiv.append(newTextDiv);
-            newImageDiv.className = "image-jeu";
-            newImageDiv.style.backgroundImage = "url('" + g.image + "')"
-            newGameDiv.append(newImageDiv);
-            newGameDiv.className = "game";
-            newGameDiv.onclick = function() {
-                                            currentGame = g;
-                                            setCaption();
-                                            fillHighscores();
-                                            fillTimes();
-                                            showAndHideButtons();
-                                            showHighscore();
-                                            };
-            grid.appendChild(newGameDiv);
-        }
-    }
-
-    function addScore() {
-        const score = document.getElementById("score")
-        const pseudo = document.getElementById("score-pseudo")
-        const pays = document.getElementById("score-pays")
-
-        if (!checkValidity([pseudo,score,pays])) {
-            return false
+        function leftBut() {
+            --currentLevel; showAndHideButtons();  fillHighscores(); fillTimes();
         }
 
-        if (parseInt(score.value) < 0 || isNaN(parseInt(score.value))) {
-            alert("Le score n'est pas bon !")
-            score.focus()
-            score.select()
-            return false
+        function rightBut() {
+            ++currentLevel; showAndHideButtons();  fillHighscores(); fillTimes();
         }
 
-        if (pseudo.value.length > 32) {
-            alert("Votre pseudo doit contenir moins de 32 caractères !")
-            pseudo.focus()
-            pseudo.select()
-            return false
-        }
-
-        currentGame.niveaux[currentLevel].highscore.push(new Highscore(score.value, pseudo.value, pays.value))
-
-        fillHighscores()
-        document.getElementById("score").value = ""
-        document.getElementById("score-pays").value = ""
-        document.getElementById("score-pseudo").value = ""
-
-        return true
-    }
-
-    function removeAllScores () {
-        const tbody = document.querySelector('#scores-body')
-        while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild)
-        }
-    }
-
-    function sortScoresRank() {
-        currentGame.niveaux[currentLevel].highscore.sort((a,b) => b.score - a.score);
-        for (let k = 0; k < currentGame.niveaux[currentLevel].highscore.length; k++) {
-            currentGame.niveaux[currentLevel].highscore[k].rank = k+1;
-        }
-        updateGames();
-    }
-
-    function sortScoresName() {
-        currentGame.niveaux[currentLevel].highscore.sort(function (a, b) {
-            a = a.pseudo.toLowerCase()
-            b = b.pseudo.toLowerCase()
-            if (a > b) {
-                return 1;
-            }
-            if (b > a) {
-                return -1;
-            }
-            return 0;
-        });
-        updateGames();
-    }
-
-    function sortScoresCountry() {
-        currentGame.niveaux[currentLevel].highscore.sort(function (a, b) {
-            if (a.pays > b.pays) {
-                return 1;
-            }
-            if (b.pays > a.pays) {
-                return -1;
-            }
-            return 0;
-        });
-        updateGames();
-    }
-    
-    function sortScores() {
-        const selectSort = document.getElementById("score-sort").value
-        if (selectSort === "Rank") sortScoresRank()
-        else if (selectSort === "Name") sortScoresName()
-        else if (selectSort === "Country") sortScoresCountry()
-    }
-
-    function fillHighscores() {
-        if (foo(currentGame) &&
-            foo(currentGame.niveaux) &&
-            foo(currentGame.niveaux[currentLevel]) &&
-            foo(currentGame.niveaux[currentLevel].highscore)) {
-
-            removeAllScores()
-            sortScoresRank()
-            sortScores()
-            setCaption()
-            let gameScore = currentGame.niveaux[currentLevel].highscore
-            for (let i = 0; i < gameScore.length; i++) {
-                let newItem = document.createElement('tr')
-                let newRank = document.createElement('td')
-                let newPseudo = document.createElement('td')
-                let newScore = document.createElement('td')
-                let newCountry = document.createElement('td')
-                newRank.textContent = "#" + gameScore[i].rank
-                newRank.style.textAlign = "center"
-                if (gameScore[i].rank === 1) {
-                    newRank.style.color = "goldenrod"
-                } else if (gameScore[i].rank === 2){
-                    newRank.style.color = "silver"
-                } else if (gameScore[i].rank === 3){
-                    newRank.style.color = "saddlebrown"
-                }
-                newPseudo.textContent = gameScore[i].pseudo
-                newScore.textContent = gameScore[i].score
-                newCountry.textContent = gameScore[i].pays
-
-                newItem.append(newRank, newPseudo, newScore, newCountry)
-                const table = document.querySelector("#scores-body")
-                table.appendChild(newItem)
-                updateGames();
-            }
-        } else { console.log("Ce score n'existe pas !") }
-
-
-    }
-
-    function addTime() {
-        const time = document.getElementById("time")
-        const pseudo = document.getElementById("time-pseudo")
-        const pays = document.getElementById("time-pays")
-
-        if(!checkValidity([pseudo,time,pays])) {
-            return false
-        }
-
-        if (pseudo.value.length > 32) {
-            alert("Votre pseudo doit contenir moins de 32 caractères !")
-            pseudo.focus()
-            pseudo.select()
-            return false
-        }
-
-        if (time.value.toString().length <= 5) {
-            time.value += ":00"
-        }
-        currentGame.niveaux[currentLevel].speedrun.push(new Speedrun(time.value, pseudo.value, pays.value))
-
-        fillTimes()
-
-        document.getElementById("time").value = "00:00:00"
-        document.getElementById("time-pays").value = ""
-        document.getElementById("time-pseudo").value = ""
-
-        return true
-    }
-
-    function removeAllTimes () {
-        const tbody = document.querySelector('#times-body')
-        while (tbody.firstChild) {
-            tbody.removeChild(tbody.firstChild)
-        }
-    }
-
-    function sortTimesRank() {
-        currentGame.niveaux[currentLevel].speedrun.sort((a,b) =>
-            (a.temps < b.temps) ? -1 : ((a.temps > b.temps) ? 1 : 0));
-        for (let k = 0; k < currentGame.niveaux[currentLevel].speedrun.length; k++) {
-            currentGame.niveaux[currentLevel].speedrun[k].rank = k+1;
-        }
-        updateGames();
-    }
-
-    function sortTimesName() {
-        currentGame.niveaux[currentLevel].speedrun.sort(function (a, b) {
-            a = a.pseudo.toLowerCase()
-            b = b.pseudo.toLowerCase()
-            if (a > b) {
-                return 1;
-            }
-            if (b > a) {
-                return -1;
-            }
-            return 0;
-        });
-        updateGames();
-    }
-
-    function sortTimesCountry() {
-        currentGame.niveaux[currentLevel].speedrun.sort(function (a, b) {
-            if (a.pays > b.pays) {
-                return 1;
-            }
-            if (b.pays > a.pays) {
-                return -1;
-            }
-            return 0;
-        });
-        updateGames();
-    }
-
-    function sortTimes() {
-        const selectSort = document.getElementById("time-sort").value
-        if (selectSort === "Rank") sortTimesRank()
-        else if (selectSort === "Name") sortTimesName()
-        else if (selectSort === "Country") sortTimesCountry()
-    }
-
-    function fillTimes() {
-        if (foo(currentGame) &&
-            foo(currentGame.niveaux) &&
-            foo(currentGame.niveaux[currentLevel]) &&
-            foo(currentGame.niveaux[currentLevel].speedrun)) {
-
-            removeAllTimes()
-            sortTimesRank()
-            sortTimes()
-            setCaption()
-            let gameTime = currentGame.niveaux[currentLevel].speedrun
-            for (let i = 0; i < gameTime.length; i++) {
-                let newItem = document.createElement('tr')
-                let newRank = document.createElement('td')
-                let newPseudo = document.createElement('td')
-                let newTime = document.createElement('td')
-                let newCountry = document.createElement('td')
-                newRank.textContent = "#" + gameTime[i].rank
-                newRank.style.textAlign = "center"
-                if (gameTime[i].rank === 1) {
-                    newRank.style.color = "goldenrod"
-                } else if (gameTime[i].rank === 2){
-                    newRank.style.color = "silver"
-                } else if (gameTime[i].rank === 3){
-                    newRank.style.color = "saddlebrown"
-                }
-                newPseudo.textContent = gameTime[i].pseudo
-                newTime.textContent = gameTime[i].temps
-                newCountry.textContent = gameTime[i].pays
-
-                newItem.append(newRank, newPseudo, newTime, newCountry)
-                const table = document.querySelector("#times-body")
-                table.appendChild(newItem)
-                updateGames();
-            }
-        } else { console.log("Ce temps n'existe pas !") }
-
-
-    }
-
-    const leftButtons = document.getElementsByClassName("fa-arrow-alt-circle-left")
-    const rightButtons = document.getElementsByClassName("fa-arrow-alt-circle-right")
-
-    function leftBut() {
-        --currentLevel; showAndHideButtons();  fillHighscores(); fillTimes();
-    }
-
-    function rightBut() {
-        ++currentLevel; showAndHideButtons();  fillHighscores(); fillTimes();
-    }
-
-    function showAndHideButtons() {
-        if (currentGame.niveaux === undefined || currentGame.niveaux === null || currentGame.niveaux.length === 0) {
-            for (let i = 0; i < leftButtons.length; i++) {
-                leftButtons[i].style.color = "white"
-                leftButtons[i].onclick = function () {}
-                leftButtons[i].addEventListener("mouseover", function () {
-                    leftButtons[i].style.cursor = "default"
-                })
-                rightButtons[i].style.color = "white"
-                rightButtons[i].onclick = function () {}
-                rightButtons[i].addEventListener("mouseover", function () {
-                    rightButtons[i].style.cursor = "default"
-                })
-            }
-        }
-        else {
-            if (currentLevel === 0) {
+        function showAndHideButtons() {
+            if (currentGame.niveaux === undefined || currentGame.niveaux === null || currentGame.niveaux.length === 0) {
                 for (let i = 0; i < leftButtons.length; i++) {
                     leftButtons[i].style.color = "white"
                     leftButtons[i].onclick = function () {}
                     leftButtons[i].addEventListener("mouseover", function () {
                         leftButtons[i].style.cursor = "default"
                     })
-                }
-            }
-            else {
-                for (let i = 0; i < leftButtons.length; i++) {
-                    leftButtons[i].style.color = "var(--color-3)"
-                    leftButtons[i].onclick = function () { leftBut() }
-                    leftButtons[i].addEventListener("mouseover", function () {
-                        leftButtons[i].style.cursor = "pointer"
-                    })
-                    leftButtons[i].addEventListener("mouseout", function () {
-                        leftButtons[i].style.cursor = "default"
-                    })
-                }
-            }
-
-            if (currentLevel === currentGame.niveaux.length - 1) {
-                for (let i = 0; i < rightButtons.length; i++) {
                     rightButtons[i].style.color = "white"
                     rightButtons[i].onclick = function () {}
                     rightButtons[i].addEventListener("mouseover", function () {
@@ -1156,20 +1125,54 @@
                 }
             }
             else {
-                for (let i = 0; i < rightButtons.length; i++) {
-                    rightButtons[i].style.color = "var(--color-3)"
-                    rightButtons[i].onclick = function () { rightBut() }
-                    rightButtons[i].addEventListener("mouseover", function () {
-                        rightButtons[i].style.cursor = "pointer"
-                    })
-                    rightButtons[i].addEventListener("mouseout", function () {
-                        rightButtons[i].style.cursor = "default"
-                    })
+                if (currentLevel === 0) {
+                    for (let i = 0; i < leftButtons.length; i++) {
+                        leftButtons[i].style.color = "white"
+                        leftButtons[i].onclick = function () {}
+                        leftButtons[i].addEventListener("mouseover", function () {
+                            leftButtons[i].style.cursor = "default"
+                        })
+                    }
+                }
+                else {
+                    for (let i = 0; i < leftButtons.length; i++) {
+                        leftButtons[i].style.color = "var(--color-3)"
+                        leftButtons[i].onclick = function () { leftBut() }
+                        leftButtons[i].addEventListener("mouseover", function () {
+                            leftButtons[i].style.cursor = "pointer"
+                        })
+                        leftButtons[i].addEventListener("mouseout", function () {
+                            leftButtons[i].style.cursor = "default"
+                        })
+                    }
+                }
+
+                if (currentLevel === currentGame.niveaux.length - 1) {
+                    for (let i = 0; i < rightButtons.length; i++) {
+                        rightButtons[i].style.color = "white"
+                        rightButtons[i].onclick = function () {}
+                        rightButtons[i].addEventListener("mouseover", function () {
+                            rightButtons[i].style.cursor = "default"
+                        })
+                    }
+                }
+                else {
+                    for (let i = 0; i < rightButtons.length; i++) {
+                        rightButtons[i].style.color = "var(--color-3)"
+                        rightButtons[i].onclick = function () { rightBut() }
+                        rightButtons[i].addEventListener("mouseover", function () {
+                            rightButtons[i].style.cursor = "pointer"
+                        })
+                        rightButtons[i].addEventListener("mouseout", function () {
+                            rightButtons[i].style.cursor = "default"
+                        })
+                    }
                 }
             }
-        }
 
-    }
-</script>
+        }
+    </script>
+</body>
+
 
 </html>
