@@ -30,6 +30,7 @@ class Speedrun {
         this.pays = null;
     }
 }
+
 // Tableau qui stock le tableau des Scores et des Temps d'un niveau d'un jeu('name')
 class Niveau {
     constructor(name) {
@@ -42,7 +43,8 @@ class Niveau {
         return Object.assign(new Niveau(), json);
     }
 }
-// Tableau qui stock les niveaux, donne un nom et une image a celui ci.
+
+// Tableau qui stock les niveaux, donne un nom et une image de celui ci.
 class Game {
     constructor(name, image) {
         this.name = name;
@@ -58,7 +60,8 @@ class Game {
         this.niveaux.push(new Niveau(name));
     }
 }
-// Tableau qui permet d'avoir les informations ( Name / Image ) d'un jeu qui est validé ou non
+
+// Tableau qui permet d'avoir les informations (Name / Image) d'un jeu qui est validé ou non
 class Suggestion {
     constructor(name, image) {
         this.name = name;
@@ -70,7 +73,8 @@ class Suggestion {
         return Object.assign(new Suggestion(), json);
     }
 }
-// Initialiser le site, pour qu'il est un minimum de jeu, meme avec des localStorage differents
+
+// Initialise le site, pour qu'il y ait un minimum de jeux, meme avec des localStorage differents
 function setup() {
     let games = {
         games : [
@@ -131,13 +135,13 @@ if (!foo(games_deserialized) || !foo(suggestions_deserialized)) {
 let suggestions = suggestions_deserialized.suggestions;
 let games = games_deserialized.games;
 
-// Sauvegarde dans la memoire ( localStorage )
+// Sauvegarde dans la memoire (localStorage)
 function updateGames() {
     const games_serialized = JSON.stringify(games_deserialized);
     localStorage.setItem("games", games_serialized);
 }
 
-// Sauvegarde dans la memoire ( localStorage )
+// Sauvegarde dans la memoire (localStorage)
 function updateSuggestions() {
     const suggestions_serialized = JSON.stringify(suggestions_deserialized)
     localStorage.setItem("suggestions", suggestions_serialized);
@@ -154,7 +158,7 @@ function printSuggestions() {
     console.log(suggestions_deserialized)
 }
 
-// Fonction qui permet de cripter un mot de passe ==> source : https://geraintluff.github.io/sha256/
+// Fonction qui permet de chiffrer un mot de passe ==> source : https://geraintluff.github.io/sha256/
 function sha256(ascii) {
     function rightRotate(value, amount) {
         return (value>>>amount) | (value<<(32 - amount));
@@ -211,7 +215,6 @@ function sha256(ascii) {
         hash = hash.slice(0, 8);
 
         for (i = 0; i < 64; i++) {
-            let i2 = i + j;
             // Expand the message into 64 words
             // Used below if
             let w15 = w[i - 15], w2 = w[i - 2];
@@ -252,7 +255,7 @@ function sha256(ascii) {
     return result;
 }
 
-// Fonction qui permet de demander le mot de passe du site, de maniere cryptée a partir de la fonction sha256
+// Fonction qui permet de demander le mot de passe du site, de maniere chiffrée à partir de la fonction sha256
 function admin() {
     let pass = prompt("Mot de passe admin : ");
     if (sha256(pass) === "f2d33bfa82a3fe93bb356ccef5d71d1a086dd8d081397f9770420ca085e7797b") {
@@ -264,10 +267,12 @@ function admin() {
     }
 }
 
+// Verifie qu'un élément existe et n'est pas null
 function foo(item) { // Verifier que l'element existe et n'est pas nul
     return item !== undefined && item !== null;
 }
 
+// Vérifie la validité d'un input html
 function checkValidity(block) {
     for (let i = 0; i < block.length; i++) {
         if (block[i].value === "") {
@@ -276,6 +281,5 @@ function checkValidity(block) {
             return false;
         }
     }
-
     return true
 }
