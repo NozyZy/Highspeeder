@@ -34,9 +34,16 @@ header {
     z-index: 10;
 }
 
-header .logo img {
+header .logo img{
     height: 50px;
-    transition: all 0.5s ease-out;
+}
+
+header .logo {
+    transition: all 1s ease-out;
+}
+
+header .logo:hover {
+    transform: translateY(-7px);
 }
 
 
@@ -129,8 +136,13 @@ footer .container .menu a{
     border-bottom: 2px solid var(--color-3);
 }
 
+footer .container a{
+    transition: all 1s ease-out;
+}
+
 footer .container a:hover{
     color: wheat;
+    transform: translateY(-7px);
 }
 
 footer h6 {
