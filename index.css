@@ -59,7 +59,7 @@ header .menu .navigation {
     text-decoration: none;
     color: white;
     font-size: 1.5em;
-    transition: transform 1s ease-out;
+    transition: transform 1s ease-out, color 2s ease-out;
 }
 
 header .menu .navigation:hover {
@@ -117,27 +117,42 @@ footer .container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 10px;
 }
 
 footer .container .menu {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    align-items: center;
     flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
-footer .container .menu a{
+footer .container .menu .navigation {
+    flex: 1 1 0;
+    text-align: center;
     position: relative;
     color: white;
     font-weight: 500;
-    margin: 10px 30px 20px;
-    text-decoration: none;
+    text-decoration: underline var(--color-3);
+    text-underline-offset: 3px;
     font-size: 1em;
-    border-bottom: 2px solid var(--color-3);
 }
 
-footer .container a{
-    transition: transform 1s ease-out;
+footer .container .links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+footer .container a {
+    color: white;
+    transition: transform 1s ease-out, color 1s ease-out;
 }
 
 footer .container a:hover{
@@ -147,6 +162,7 @@ footer .container a:hover{
 
 footer h6 {
     color: white;
+    text-align: center;
 }
 
 @media (max-width: 1100px) {
@@ -168,8 +184,11 @@ footer h6 {
     footer .container .menu {
         display: flex;
         flex-direction: column;
-        align-content: center;
         align-items: center;
+    }
+
+    footer .container .menu .navigation {
+        margin-bottom: 10px;
     }
 }
 

@@ -44,13 +44,21 @@ main .affichage::before {
     overflow: hidden;
 }
 
-main .affichage .equipe, main .affichage .repartition, main .affichage .complement {
+main .affichage .equipe, main .affichage .repartition, main .affichage .complement, main .affichage .links {
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
     margin: 10px;
 }
+main .affichage .links a {
+    text-decoration: none;
+     color: var(--color-3);
+     transition: color 1s ease-out;
+}
 
+main .affichage .links a:hover {
+    color: var(--color-2);
+}
 
 main .affichage .repartition .person {
     display: flex;
