@@ -1,12 +1,13 @@
-
+// Tableau des scores
 class Highscore {
     constructor(score, pseudo, pays) {
-        this.score = score;
-        this.pseudo = pseudo;
-        this.pays = pays;
-        this.rank = 0;
+        this.score = score; // Stockage Score
+        this.pseudo = pseudo; // Stockage Pseudo
+        this.pays = pays; // Stockage Pays
+        this.rank = 0; // Initialise le rank ( position dans le tableau )
     }
 
+    // Nettoie le tableau pour qu'il soit vide au départ
     clear() {
         this.score = null;
         this.pseudo = null;
@@ -14,6 +15,7 @@ class Highscore {
     }
 }
 
+// Tableau des temps
 class Speedrun {
     constructor(temps, pseudo, pays) {
         this.temps = temps;
@@ -28,7 +30,7 @@ class Speedrun {
         this.pays = null;
     }
 }
-
+// Tableau qui stock le tableau des Scores et des Temps d'un niveau d'un jeu('name')
 class Niveau {
     constructor(name) {
         this.name = name;
@@ -40,7 +42,7 @@ class Niveau {
         return Object.assign(new Niveau(), json);
     }
 }
-
+// Tableau qui stock les niveaux, donne un nom et une image a celui ci.
 class Game {
     constructor(name, image) {
         this.name = name;
@@ -56,7 +58,7 @@ class Game {
         this.niveaux.push(new Niveau(name));
     }
 }
-
+// Tableau qui permet d'avoir les informations ( Name / Image ) d'un jeu qui est validé ou non
 class Suggestion {
     constructor(name, image) {
         this.name = name;
@@ -64,15 +66,11 @@ class Suggestion {
         this.validate = 0;
     }
 
-    setSalidate(validation) {
-        this.validate = validation;
-    }
-
     static from(json){
         return Object.assign(new Suggestion(), json);
     }
 }
-
+// Initialiser le site, pour qu'il est un minimum de jeu, meme avec des localStorage differents
 function setup() {
     let games = {
         games : [
@@ -133,27 +131,30 @@ if (!foo(games_deserialized) || !foo(suggestions_deserialized)) {
 let suggestions = suggestions_deserialized.suggestions;
 let games = games_deserialized.games;
 
-
+// Sauvegarde dans la memoire ( localStorage )
 function updateGames() {
     const games_serialized = JSON.stringify(games_deserialized);
     localStorage.setItem("games", games_serialized);
 }
 
+// Sauvegarde dans la memoire ( localStorage )
 function updateSuggestions() {
     const suggestions_serialized = JSON.stringify(suggestions_deserialized)
     localStorage.setItem("suggestions", suggestions_serialized);
     console.log("suggestions updated : ", suggestions_serialized);
 }
 
+// Fonction de verification sur la console
 function printGames() {
     console.log(games_deserialized);
 }
 
+// Fonction de verification sur la console
 function printSuggestions() {
     console.log(suggestions_deserialized)
 }
 
-// source : https://geraintluff.github.io/sha256/
+// Fonction qui permet de cripter un mot de passe ==> source : https://geraintluff.github.io/sha256/
 function sha256(ascii) {
     function rightRotate(value, amount) {
         return (value>>>amount) | (value<<(32 - amount));
@@ -251,6 +252,7 @@ function sha256(ascii) {
     return result;
 }
 
+// Fonction qui permet de demander le mot de passe du site, de maniere cryptée a partir de la fonction sha256
 function admin() {
     let pass = prompt("Mot de passe admin : ");
     if (sha256(pass) === "f2d33bfa82a3fe93bb356ccef5d71d1a086dd8d081397f9770420ca085e7797b") {
@@ -262,7 +264,7 @@ function admin() {
     }
 }
 
-function foo(item) {
+function foo(item) { // Verifier que l'element existe et n'est pas nul
     return item !== undefined && item !== null;
 }
 
