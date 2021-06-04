@@ -39,7 +39,7 @@ header .logo img{
 }
 
 header .logo {
-    transition: all 1s ease-out;
+    transition: transform 1s ease-out;
 }
 
 header .logo:hover {
@@ -59,7 +59,7 @@ header .menu .navigation {
     text-decoration: none;
     color: white;
     font-size: 1.5em;
-    transition: all 1s ease-out;
+    transition: transform 1s ease-out;
 }
 
 header .menu .navigation:hover {
@@ -137,7 +137,7 @@ footer .container .menu a{
 }
 
 footer .container a{
-    transition: all 1s ease-out;
+    transition: transform 1s ease-out;
 }
 
 footer .container a:hover{
